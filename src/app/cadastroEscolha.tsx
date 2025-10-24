@@ -1,5 +1,6 @@
 import { router } from "expo-router";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function CadastroEscolha(){
     return(
@@ -11,7 +12,7 @@ export default function CadastroEscolha(){
                 <Text style={styles.label}>Selecione o tipo de usuário que deseja cadastrar:</Text>
                 
 
-                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/(drawer)/(tabs)/paginaInicial')}>
+                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/cadastroPaciente')}>
                     <Text style={styles.buttonText}>Paciente</Text>
                 </TouchableOpacity>
 

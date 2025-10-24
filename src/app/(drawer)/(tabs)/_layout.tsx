@@ -1,16 +1,20 @@
-import { Slot } from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+
 
 export default function Layout(){
     return(
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>BEM ESTAR ONLINE</Text>
-            </View>
-            <Slot/>
-        </SafeAreaView>
+        <Tabs screenOptions={{headerShown:false}}>
+            <Tabs.Screen 
+                name="paginaInicial" 
+                options={{
+                    tabBarStyle:{
+                        backgroundColor: '#0c0346',
+                    }
+            }}/>
+        </Tabs>
+            
     )
 }
 
@@ -31,5 +35,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 })
-
 
