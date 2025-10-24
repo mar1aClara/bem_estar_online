@@ -11,11 +11,11 @@ export default function CadastroEscolha(){
                 <Text style={styles.label}>Selecione o tipo de usuário que deseja cadastrar:</Text>
                 
 
-                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/(drawer)/(tabs)/paginaInicial')}>
+                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/cadastroPaciente')}>
                     <Text style={styles.buttonText}>Paciente</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/(drawer)/(tabs)/paginaInicial')}>
+                <TouchableOpacity style={styles.button} onPress={()=> router.navigate('/cadastroUnidadeDeSaude')}>
                     <Text style={styles.buttonText}>Unidade de Saúde</Text>
                 </TouchableOpacity>
 
