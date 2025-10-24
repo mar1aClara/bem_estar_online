@@ -26,11 +26,6 @@ export default function CodigoSenha() {
                 }
             }
             setCode(newCode);
-
-            // Foca no último campo preenchido
-            const nextIndex = Math.min(index + chars.length, newCode.length - 1);
-            inputsRef.current[nextIndex]?.focus();
-            return;
         }
 
         // Permite apenas números ou campo vazio
@@ -39,15 +34,6 @@ export default function CodigoSenha() {
             newCode[index] = text;
             setCode(newCode);
 
-            // Se digitou, vai para o próximo
-            if (text !== "" && index < newCode.length - 1) {
-                inputsRef.current[index + 1]?.focus();
-            }
-
-            // Se apagou, volta um campo
-            if (text === "" && index > 0) {
-                inputsRef.current[index - 1]?.focus();
-            }
         }
     };
 
