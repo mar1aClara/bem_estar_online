@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import React from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function CadastroUnidSaude() {
@@ -77,7 +78,7 @@ export default function CadastroUnidSaude() {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => router.navigate('/telaLogin')}
+                    onPress={() => router.navigate('/telaLogin/telaLogin')}
                 >
                     <Text style={styles.buttonText}>Continuar</Text>
                 </TouchableOpacity>

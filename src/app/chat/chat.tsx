@@ -41,9 +41,11 @@ export default function Chat() {
   return (
     <View style={styles.container}>
     <View style={styles.header}>
-    <Pressable onPress={() => router.back()}>
+
+    <Pressable onPress={() => router.navigate('/(drawer)/(tabs)/paginaInicial')}>
       <MaterialCommunityIcons name="arrow-left" size={30} color="#000"/>
     </Pressable>
+
       <Text style={styles.headerText}>CHAT</Text>
     </View>
       <FlatList

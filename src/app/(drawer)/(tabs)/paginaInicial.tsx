@@ -3,6 +3,7 @@ import { MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons
 import React from "react";
 import { router } from "expo-router";
 import { CardHome } from "@/components/CardHome";
+import Rodape from "@/components/Rodape";
 
 export default function PaginaInicial() {
 
@@ -14,7 +15,7 @@ export default function PaginaInicial() {
                 <MaterialCommunityIcons name="pill" size={22} color="#fff" />
             </View>
                 
-            <Pressable style={styles.cardPressable}> 
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/(drawer)/(tabs)/calendario')}>
                 <CardHome title="Calendário" subtitle="Acesse o calendário de horários disponíveis!" nameIcon="calendar" />
             </Pressable>
 
@@ -30,10 +31,11 @@ export default function PaginaInicial() {
                 <CardHome title="Medicamentos" subtitle="Solicite medicamentos aqui!" nameIcon="plus-thick"/>
             </Pressable>
 
-            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/(drawer)/(tabs)/chat')}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/Chat/chat')}>
                 <CardHome title="Bate-papo" subtitle="Fale conosco aqui!" nameIcon="chat"/>
             </Pressable>
 
+            <Rodape/>
             
         </View>
 

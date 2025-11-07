@@ -15,7 +15,7 @@ type Props =  {
 export function CardHome({title, subtitle, nameIcon} : Props) {
     return (
             <View style={styles.row}>
-                <MaterialCommunityIcons name={nameIcon} size={40} color="#fff"/>
+                <MaterialCommunityIcons name={nameIcon} size={50} color="#fff"/>
                 <View>
                     <Text style={styles.cardTitle}>{title}</Text>
                     <Text style={styles.cardSubtitle}>{subtitle}</Text>
@@ -30,11 +30,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 15,
+       
     },
     cardTitle: {
         color: "#fff",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 18,
         marginBottom: 4,
     },
     cardSubtitle: {

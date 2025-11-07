@@ -81,7 +81,7 @@ export default function TelaLogin() {
 
                 <TouchableOpacity 
                     style={styles.button} 
-                    onPress={() => router.navigate('/medicamentos')}
+                    onPress={() => router.navigate('/telaLogin/telaLogin')}
                 >
                     <Text style={styles.buttonText}>Continuar</Text>
                 </TouchableOpacity>

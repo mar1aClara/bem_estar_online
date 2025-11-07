@@ -42,27 +42,37 @@ export default function LayoutTabs(){
                     tabBarItemStyle: {display: 'none'},
                 }}
             />
+
+            <Tabs.Screen 
+                name="calendario" 
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="calendar" size={24} color={color} />
+                    ),
+                    tabBarLabel: "Calendário",
+                }}
+            />
             
         </Tabs>
             
     )
 }
 
-const styles = StyleSheet.create({
-    container:{
-        flex: 1
-    },
-    header:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: "#678ab2", 
-        width: '100%',
-        padding: 15,
-    },
-    headerText: { 
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-    }
-})
+// const styles = StyleSheet.create({
+//     container:{
+//         flex: 1
+//     },
+//     header:{
+//         flexDirection: 'row',
+//         alignItems: 'center',
+//         backgroundColor: "#678ab2", 
+//         width: '100%',
+//         padding: 15,
+//     },
+//     headerText: { 
+//         color: '#fff',
+//         fontSize: 20,
+//         fontWeight: 'bold',
+//     }
+// })
 
