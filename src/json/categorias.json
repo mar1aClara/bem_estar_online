@@ -1,0 +1,8 @@
+[
+  { "nome": "Todos", "icone": "th-large", "filtro": "Todos" },
+  { "nome": "Analgésicos", "icone": "plus-circle", "filtro": "Analgésicos" },
+  { "nome": "Vitaminas", "icone": "leaf", "filtro": "Vitaminas" },
+  { "nome": "Anti-inflam.", "icone": "medkit", "filtro": "Anti-inflamatórios" },
+  { "nome": "Dermatol.", "icone": "tint", "filtro": "Dermatológicos" },
+  { "nome": "Fitoterápicos", "icone": "envira", "filtro": "Fitoterápicos" }
+]
