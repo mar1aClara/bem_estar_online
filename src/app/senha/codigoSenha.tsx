@@ -88,8 +88,6 @@ export default function CodigoSenha() {
     );
 }
 
-// ==================== ESTILOS ====================
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
