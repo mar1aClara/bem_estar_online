@@ -14,7 +14,7 @@ export default function EsqueciSenha() {
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             Alert.alert("Sucesso", "Código enviado para o seu e-mail!");
-            router.push({ pathname: "/codigoSenha", params: { email } });
+            router.push({ pathname: "/senha/codigoSenha", params: { email } });
         } catch {
             Alert.alert("Erro", "Não foi possível enviar o código.");
         }

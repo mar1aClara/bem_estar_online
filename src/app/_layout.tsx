@@ -16,7 +16,8 @@ export default function Layout(){
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1
+        flex: 1,
+        backgroundColor: "#091942",
     },
     header:{
         flexDirection: 'row',
