@@ -1,8 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
-<<<<<<< HEAD:src/app/codigoSenha.tsx
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
-=======
 import {
     Alert,
     StyleSheet,
@@ -11,7 +8,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
->>>>>>> 611124c9f20b06b9fcfd7c9f12eaf3bfeadea899:src/app/senha/codigoSenha.tsx
 
 export default function CodigoSenha() {
     const { email } = useLocalSearchParams(); // pega o e-mail vindo da tela anterior
