@@ -93,7 +93,7 @@ export default function TelaVendas() {
         return produto.tipo === filtroAtivo;
     });
 
-    const navegarParaDetalhes = (produto) => {
+    const navegarParaDetalhes = (produto: { id: number; nome: string; preco: string; img: any; tipo: string; }) => {
         router.navigate({
             pathname: '/DetalheMedicamento', 
             params: produto 

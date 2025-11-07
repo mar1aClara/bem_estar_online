@@ -1,6 +1,6 @@
 import { router } from "expo-router";
+import React from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import CodigoSenha from "./codigoSenha";
 
 export default function EsqueciSenha() {
     const passwordVerify = async () => {
@@ -11,12 +11,12 @@ export default function EsqueciSenha() {
 
             // Qualquer código é aceito (modo simulação)
             Alert.alert("Sucesso", "Senha Cadastrada!");
-            router.push({ pathname: "/telaLogin", params: {}});
+            router.push({ pathname: "/telaLogin", params: {} });
         } catch {
             Alert.alert("Erro", "Não foi possível cadastrar senha.");
         }
     };
-    return (  
+    return (
         <View style={styles.container}>
             <View style={styles.loginBox}>
                 <Text style={styles.loginTitle}>REDEFINA SUA SENHA</Text>

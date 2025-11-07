@@ -1,13 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
-import {
-    Alert,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
 
 export default function CodigoSenha() {
     const { email } = useLocalSearchParams(); // pega o e-mail vindo da tela anterior
@@ -87,8 +80,6 @@ export default function CodigoSenha() {
         </View>
     );
 }
-
-// ==================== ESTILOS ====================
 
 const styles = StyleSheet.create({
     container: {
