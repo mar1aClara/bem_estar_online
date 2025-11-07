@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-    logo: { 
-        width: 150, 
-        height: 150,
-        marginRight: 10,
-    },
+  logo: { 
+    width: 150, 
+    height: 150,
+    marginRight: 10,
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',

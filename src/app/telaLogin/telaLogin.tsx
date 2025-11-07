@@ -26,11 +26,11 @@ export default function TelaLogin() {
                 </TouchableOpacity>
 
                 <View style={styles.linkContainer}>
-                    <TouchableOpacity onPress={() => router.navigate('/cadastroEscolha')}>
+                    <TouchableOpacity onPress={() => router.navigate('/cadastro/cadastroEscolha')}>
                         <Text style={styles.link}>Cadastre-se</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.navigate('/esqueciSenha')}>
+                    <TouchableOpacity onPress={() => router.navigate('/senha/esqueciSenha')}>
                         <Text style={styles.link}>Esqueci a senha.</Text>
                     </TouchableOpacity>
                 </View>

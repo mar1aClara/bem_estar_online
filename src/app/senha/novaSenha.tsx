@@ -1,7 +1,21 @@
 import { router } from "expo-router";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function EsqueciSenha() {
+    const passwordVerify = async () => {
+
+        try {
+            // Simula um pequeno atraso de rede
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // Qualquer código é aceito (modo simulação)
+            Alert.alert("Sucesso", "Senha Cadastrada!");
+            router.push({ pathname: "/telaLogin", params: {} });
+        } catch {
+            Alert.alert("Erro", "Não foi possível cadastrar senha.");
+        }
+    };
     return (
         <View style={styles.container}>
             <View style={styles.loginBox}>
@@ -19,7 +33,7 @@ export default function EsqueciSenha() {
                     placeholder="********"
                 />
 
-                <TouchableOpacity style={styles.button} onPress={() => router.navigate('/telaLogin')}>
+                <TouchableOpacity style={styles.button} onPress={(passwordVerify)}>
                     <Text style={styles.buttonText}>Enviar</Text>
                 </TouchableOpacity>
             </View>

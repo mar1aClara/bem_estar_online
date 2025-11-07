@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
     Alert,
     StyleSheet,
@@ -26,11 +26,6 @@ export default function CodigoSenha() {
                 }
             }
             setCode(newCode);
-
-            // Foca no último campo preenchido
-            const nextIndex = Math.min(index + chars.length, newCode.length - 1);
-            inputsRef.current[nextIndex]?.focus();
-            return;
         }
 
         // Permite apenas números ou campo vazio
@@ -39,15 +34,6 @@ export default function CodigoSenha() {
             newCode[index] = text;
             setCode(newCode);
 
-            // Se digitou, vai para o próximo
-            if (text !== "" && index < newCode.length - 1) {
-                inputsRef.current[index + 1]?.focus();
-            }
-
-            // Se apagou, volta um campo
-            if (text === "" && index > 0) {
-                inputsRef.current[index - 1]?.focus();
-            }
         }
     };
 
@@ -65,7 +51,7 @@ export default function CodigoSenha() {
 
             // Qualquer código é aceito (modo simulação)
             Alert.alert("Sucesso", "Código verificado!");
-            router.push({ pathname: "/novaSenha", params: { email } });
+            router.push({ pathname: "/senha/novaSenha", params: { email } });
         } catch {
             Alert.alert("Erro", "Não foi possível verificar o código.");
         }
@@ -101,8 +87,6 @@ export default function CodigoSenha() {
         </View>
     );
 }
-
-// ==================== ESTILOS ====================
 
 const styles = StyleSheet.create({
     container: {
