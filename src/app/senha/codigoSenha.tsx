@@ -1,6 +1,17 @@
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
+<<<<<<< HEAD:src/app/codigoSenha.tsx
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
+=======
+import {
+    Alert,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
+>>>>>>> 611124c9f20b06b9fcfd7c9f12eaf3bfeadea899:src/app/senha/codigoSenha.tsx
 
 export default function CodigoSenha() {
     const { email } = useLocalSearchParams(); // pega o e-mail vindo da tela anterior
@@ -44,7 +55,7 @@ export default function CodigoSenha() {
 
             // Qualquer código é aceito (modo simulação)
             Alert.alert("Sucesso", "Código verificado!");
-            router.push({ pathname: "/novaSenha", params: { email } });
+            router.push({ pathname: "/senha/novaSenha", params: { email } });
         } catch {
             Alert.alert("Erro", "Não foi possível verificar o código.");
         }
