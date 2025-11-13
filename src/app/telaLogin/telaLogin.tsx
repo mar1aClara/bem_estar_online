@@ -1,44 +1,83 @@
-import { router } from "expo-router";
-import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
-export default function TelaLogin() {
-    return (
-        <View style={styles.container}>
+export default function LoginScreen() {
+  const router = useRouter();
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
 
-            <View style={styles.loginBox}>
-                <Text style={styles.loginTitle}>LOGIN</Text>
+  function handleLogin() {
+    if (login.trim() === '' || senha.trim() === '') {
+      Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+      return;
+    }
 
-                <Text style={styles.label}>E-mail:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Digite seu e-mail'
-                />
+    // Remove caracteres não numéricos do CPF/CNPJ
+    const numericLogin = login.replace(/\D/g, '');
 
-                <Text style={styles.label}>Senha:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Digite sua senha'
-                />
+    // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)
+    if (numericLogin.length === 11) {
+      // Exemplo: usuário pessoa física
+      router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
+    } else if (numericLogin.length === 14) {
+      // Exemplo: usuário empresa
+      router.navigate('/(drawer)/(tabs)/paginaInicialPostoSaude');
+    } else {
+      Alert.alert('Digite um login válido.');
+    }
+  }
 
-                <TouchableOpacity style={styles.button} onPress={() => router.navigate('/(drawer)/(tabs)/paginaInicial')}>
-                    <Text style={styles.buttonText}>Entrar</Text>
-                </TouchableOpacity>
+  const isFormValid = login.trim() !== '' && senha.trim() !== '';
 
-                <View style={styles.linkContainer}>
-                    <TouchableOpacity onPress={() => router.navigate('/cadastro/cadastroEscolha')}>
-                        <Text style={styles.link}>Cadastre-se</Text>
-                    </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      <View style={styles.loginBox}>
+        <Text style={styles.loginTitle}>LOGIN</Text>
 
-                    <TouchableOpacity onPress={() => router.navigate('/senha/esqueciSenha')}>
-                        <Text style={styles.link}>Esqueci a senha.</Text>
-                    </TouchableOpacity>
-                </View>
+        <Text style={styles.label}>Login:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite seu CPF ou CNPJ"
+          value={login}
+          onChangeText={setLogin}
+          keyboardType="numeric"
+        />
 
-            </View>
+        <Text style={styles.label}>Senha:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite sua senha"
+          secureTextEntry
+          value={senha}
+          onChangeText={setSenha}
+        />
+
+        <TouchableOpacity
+          style={[
+            styles.button,
+            // { backgroundColor: isFormValid ? '#007bff' : '#999' },
+          ]}
+          onPress={handleLogin}
+        //   disabled={!isFormValid}
+        >
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+
+        <View style={styles.linkContainer}>
+          <TouchableOpacity onPress={() => router.navigate('/cadastro/cadastroEscolha')}>
+            <Text style={styles.link}>Cadastre-se</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.navigate('/senha/esqueciSenha')}>
+            <Text style={styles.link}>Esqueci a senha.</Text>
+          </TouchableOpacity>
         </View>
-    );
+      </View>
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -95,5 +134,3 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     },
 })
-
-

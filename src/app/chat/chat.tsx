@@ -39,10 +39,12 @@ export default function Chat() {
 
   return (
     <View style={styles.container}>
+      
     <View style={styles.header}>
       <SetaVoltar />
       <Text style={styles.headerText}>CHAT</Text>
     </View>
+
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
