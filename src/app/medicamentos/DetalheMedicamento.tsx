@@ -24,14 +24,6 @@ export default function DetalheMedicamento() {
             setQuantidade(quantidade - 1);
         }
     };
-
-    const abrirModalConfirmacao = () => {
-        if (quantidade > 1) {
-             Alert.alert("Erro", "Quantidade solicitada excede o estoque disponível.");
-             return;
-        }
-        setIsSummaryVisible(true);
-    };
     
     const finalizarCompra = () => {  
         if (produto.receitaObrigatoria && !receitaCarregada) {
@@ -108,7 +100,7 @@ export default function DetalheMedicamento() {
 
 
                 {/* --- 4. BOTÃO DE AÇÃO PRINCIPAL --- */}
-                <TouchableOpacity style={styles.buyButton} onPress={abrirModalConfirmacao}>
+                <TouchableOpacity style={styles.buyButton} onPress={() => setIsSummaryVisible(true)}>
                     <Text style={styles.buyButtonText}>
                         {produto.receitaObrigatoria && !receitaCarregada ? 'REVISAR RECEITA' : 'CONFIRMAR COMPRA'}
                     </Text>

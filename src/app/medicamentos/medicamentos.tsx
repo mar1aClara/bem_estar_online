@@ -5,7 +5,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import ListaCategorias from "@/components/CategoriaList";
 import ItemCard from "@/components/ProdutoCard";
 import dadosMedicamentos from "@/json/medicamentos.js";
-import SetaVoltar from "@/components/SetaVoltar";
 import Header from "@/components/Header";
 
 const { width } = Dimensions.get('window');
