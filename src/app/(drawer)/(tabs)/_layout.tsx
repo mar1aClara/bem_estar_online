@@ -1,23 +1,23 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 
-export default function LayoutTabs(){
-    return(
+export default function LayoutTabs() {
+    return (
         <Tabs screenOptions={{
-            headerShown:false, 
-            tabBarActiveTintColor: '#fff', 
-            tabBarInactiveTintColor: '#888', 
-            tabBarStyle:{
+            headerShown: false,
+            tabBarActiveTintColor: '#fff',
+            tabBarInactiveTintColor: '#888',
+            tabBarStyle: {
                 backgroundColor: '#0c0346',
                 borderTopColor: 'transparent',
                 shadowColor: 'transparent',
-            }}}>
+            }
+        }}>
 
-            <Tabs.Screen 
-                name="paginaInicial" 
+            <Tabs.Screen
+                name="paginaInicial"
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="home" size={24} color={color} />
@@ -25,9 +25,9 @@ export default function LayoutTabs(){
                     tabBarLabel: "Início",
                 }}
             />
-            
-            <Tabs.Screen 
-                name="artigos" 
+
+            <Tabs.Screen
+                name="artigos"
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="card-text" size={24} color={color} />
@@ -36,15 +36,15 @@ export default function LayoutTabs(){
                 }}
             />
 
-            <Tabs.Screen 
-                name="chat" 
+            <Tabs.Screen
+                name="chat"
                 options={{
-                    tabBarItemStyle: {display: 'none'},
+                    tabBarItemStyle: { display: 'none' },
                 }}
             />
 
-            <Tabs.Screen 
-                name="calendario" 
+            <Tabs.Screen
+                name="calendario"
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="calendar" size={24} color={color} />
@@ -52,9 +52,19 @@ export default function LayoutTabs(){
                     tabBarLabel: "Calendário",
                 }}
             />
-            
+
+            <Tabs.Screen
+                name="perfil"
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="account-circle-outline" size={24} color={color} />
+                    ),
+                    tabBarLabel: "Perfil",
+                }}
+            />
+
         </Tabs>
-            
+
     )
 }
 
@@ -65,11 +75,11 @@ export default function LayoutTabs(){
 //     header:{
 //         flexDirection: 'row',
 //         alignItems: 'center',
-//         backgroundColor: "#678ab2", 
+//         backgroundColor: "#678ab2",
 //         width: '100%',
 //         padding: 15,
 //     },
-//     headerText: { 
+//     headerText: {
 //         color: '#fff',
 //         fontSize: 20,
 //         fontWeight: 'bold',

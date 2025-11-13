@@ -11,7 +11,7 @@ export default function EsqueciSenha() {
 
             // Qualquer código é aceito (modo simulação)
             Alert.alert("Sucesso", "Senha Cadastrada!");
-            router.push({ pathname: "/telaLogin", params: {} });
+            router.push({ pathname: "/telaLogin/telaLogin", params: {} });
         } catch {
             Alert.alert("Erro", "Não foi possível cadastrar senha.");
         }
