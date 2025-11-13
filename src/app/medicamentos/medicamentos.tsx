@@ -60,8 +60,8 @@ export default function TelaVendas() {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
+        <View>
+            <View>
                 <Header texto="Postinho Virtual"/>
 
                 {/* Botão de Pesquisa*/}
