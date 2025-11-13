@@ -27,11 +27,11 @@ export default function PaginaInicial() {
                 <CardHome title="Minha Carteira Online" subtitle="Confira as vacinas disponíveis!" nameIcon="wallet"/>
             </Pressable>
 
-            <Pressable style={styles.cardPressable}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/medicamentos/medicamentos')}>
                 <CardHome title="Medicamentos" subtitle="Solicite medicamentos aqui!" nameIcon="plus-thick"/>
             </Pressable>
 
-            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/Chat/chat')}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/chat/chat')}>
                 <CardHome title="Bate-papo" subtitle="Fale conosco aqui!" nameIcon="chat"/>
             </Pressable>
 

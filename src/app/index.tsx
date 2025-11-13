@@ -10,7 +10,7 @@ export default function Index() {
       <Text style={styles.subtitle}>Seu bem-estar ao alcance de um toque</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.navigate('/telaLogin')}
+        onPress={() => router.navigate('/telaLogin/telaLogin')}
       >
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>

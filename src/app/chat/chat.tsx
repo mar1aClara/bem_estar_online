@@ -1,5 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import SetaVoltar from "@/components/SetaVoltar";
 import React, { useState } from "react";
 import { View, Text, TextInput, FlatList, Pressable, StyleSheet } from "react-native";
 
@@ -41,11 +40,7 @@ export default function Chat() {
   return (
     <View style={styles.container}>
     <View style={styles.header}>
-
-    <Pressable onPress={() => router.navigate('/(drawer)/(tabs)/paginaInicial')}>
-      <MaterialCommunityIcons name="arrow-left" size={30} color="#000"/>
-    </Pressable>
-
+      <SetaVoltar />
       <Text style={styles.headerText}>CHAT</Text>
     </View>
       <FlatList
