@@ -19,7 +19,7 @@ export default function PaginaInicial() {
                 <CardHome title="Calendário" subtitle="Acesse o calendário de horários disponíveis!" nameIcon="calendar" />
             </Pressable>
 
-            <Pressable style={styles.cardPressable}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/localizacao/localizacao')}>
                 <CardHome title="Localização" subtitle="Unidades mais próximas de você!" nameIcon="map" />
             </Pressable>
 
@@ -27,11 +27,11 @@ export default function PaginaInicial() {
                 <CardHome title="Minha Carteira Online" subtitle="Confira as vacinas disponíveis!" nameIcon="wallet"/>
             </Pressable>
 
-            <Pressable style={styles.cardPressable}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/medicamentos/medicamentos')}>
                 <CardHome title="Medicamentos" subtitle="Solicite medicamentos aqui!" nameIcon="plus-thick"/>
             </Pressable>
 
-            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/Chat/chat')}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/chat/chat')}>
                 <CardHome title="Bate-papo" subtitle="Fale conosco aqui!" nameIcon="chat"/>
             </Pressable>
 
@@ -68,65 +68,5 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
         fontSize: 16,
-    },
-    // card: {
-    //     backgroundColor: "#28578e85",
-    //     borderRadius: 15,
-    //     width: "90%",
-    //     alignItems: "center",
-    //     padding: 20,
-    //     marginBottom: 20,
-    // },
-    // bigNumber: {
-    //     color: "#fff",
-    //     fontSize: 42,
-    //     fontWeight: "bold",
-    // },
-    // smallText: {
-    //     color: "#cfe8ff",
-    //     fontSize: 16,
-    // },
-    // doctorName: {
-    //     color: "#fff",
-    //     fontWeight: "600",
-    //     fontSize: 16,
-    //     marginTop: 5,
-    // },
-    // cardPressable: {
-    //     backgroundColor: "#28578e85",
-    //     borderRadius: 15,
-    //     width: "90%",
-    //     padding: 20,
-    //     marginBottom: 20,
-    // },
-    // row: {
-    //     flexDirection: "row",
-    //     alignItems: "center",
-    //     gap: 15,
-    // },
-    // cardTitle: {
-    //     color: "#fff",
-    //     fontWeight: "bold",
-    //     fontSize: 16,
-    //     marginBottom: 4,
-    // },
-    // cardSubtitle: {
-    //     color: "#cfe8ff",
-    //     fontSize: 13,
-    // },
-    // iconContainer: {
-    //     width: 45,
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    // },
-    // iconCircle: {
-    //     backgroundColor: "#ff1248",
-    //     borderRadius: 50,
-    //     height: 45,
-    //     width: 45,
-    // },
-    // textContainer: {
-    //     flex: 1,
-    // }
-   
+    }
 });

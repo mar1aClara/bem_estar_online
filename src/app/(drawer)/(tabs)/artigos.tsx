@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, FlatList, StyleSheet, Pressable } from "react-native";
 import CardArtigo from "@/components/CardArtigo";
 import ModalCard from "@/components/ModalCard";
+import Rodape from "@/components/Rodape";
 
 type ArtigoType = {
   id: number;
@@ -30,6 +31,8 @@ export default function Artigos() {
               <CardArtigo titulo={item.titulo} imagem={item.imagem} />
             </Pressable>
           )}
+          ListFooterComponent={<Rodape />}
+          contentContainerStyle={{ paddingBottom: 20 }}
         />
         {artigoSelecionado && (
           <ModalCard
@@ -41,7 +44,7 @@ export default function Artigos() {
           />
         )}
       </View>
-
+        
     </View>
   );
 }

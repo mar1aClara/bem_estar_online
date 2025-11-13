@@ -1,3 +1,4 @@
+import SetaVoltar from "@/components/SetaVoltar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -40,14 +41,12 @@ export default function Chat() {
 
   return (
     <View style={styles.container}>
+      
     <View style={styles.header}>
-
-    <Pressable onPress={() => router.navigate('/(drawer)/(tabs)/paginaInicial')}>
-      <MaterialCommunityIcons name="arrow-left" size={30} color="#000"/>
-    </Pressable>
-
+      <SetaVoltar color="#000"/>
       <Text style={styles.headerText}>CHAT</Text>
     </View>
+
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}

@@ -17,7 +17,7 @@ export default function LayoutTabs(){
             }}}>
 
             <Tabs.Screen 
-                name="paginaInicial" 
+                name="paginaInicialPaciente" 
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="home" size={24} color={color} />
