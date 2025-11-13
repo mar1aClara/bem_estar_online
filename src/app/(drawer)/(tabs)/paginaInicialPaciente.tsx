@@ -1,7 +1,3 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
-import React from "react";
-import { router } from "expo-router";
 import { CardHome } from "@/components/CardHome";
 import Rodape from "@/components/Rodape";
 
