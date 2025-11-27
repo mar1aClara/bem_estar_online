@@ -10,11 +10,11 @@ export default function EditarPerfil() {
             <View style={styles.profileCard}>
                 <View style={styles.profileCircle}>
                     <MaterialCommunityIcons name="account" size={55} color="#fff" />
-                    <TouchableOpacity style={styles.alterarButton}>
-                        <Text style={styles.alterarLabel}>Alterar imagem</Text>
-                    </TouchableOpacity>
-
                 </View>
+                <TouchableOpacity style={styles.alterarButton}>
+                    <Text style={styles.alterarLabel}>Alterar imagem</Text>
+                </TouchableOpacity>
+                <Text style={styles.name}>Fulaninho da Silva</Text>
             </View>
             <View style={styles.form}>
                 <Text style={styles.label}>Nome</Text>
@@ -70,14 +70,15 @@ const styles = StyleSheet.create({
         width: "90%",
         alignItems: "center",
         padding: 20,
-        marginTop: 40,
+        marginTop: 10,
+        marginBottom: 20,
         position: "relative",
     },
     alterarLabel: {
-        color: "#fff",
+        color: "#3f638e",
         fontWeight: "bold",
-        fontSize: 16,
-        marginTop: 10,
+        fontSize: 12,
+        marginTop: 8,
     },
     profileCircle: {
         backgroundColor: "#3f638e",
@@ -90,8 +91,14 @@ const styles = StyleSheet.create({
     alterarButton: {
 
     },
+    name: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 18,
+        marginTop: 5,
+    },
     form: {
-        width: "85%",
+        width: "90%",
         backgroundColor: "#1c2d6b",
         borderRadius: 15,
         padding: 20,
