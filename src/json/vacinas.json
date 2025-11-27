@@ -1,0 +1,30 @@
+[
+    {
+      "id": "vac_001",
+      "name": "Tétano e Difteria (dT)",
+      "dueDate": "2025-06-15",
+      "isTaken": false,
+      "hora": "14:30"
+    },
+    {
+      "id": "vac_002",
+      "name": "Gripe (Influenza)",
+      "dueDate": "2024-04-01",
+      "isTaken": true,
+      "hora": "09:00"
+    },
+    {
+      "id": "vac_003",
+      "name": "Hepatite B",
+      "dueDate": "2026-01-20",
+      "isTaken": false,
+      "hora": "11:15"
+    },
+    {
+      "id": "vac_004",
+      "name": "Sarampo, Caxumba e Rubérola (SCR)",
+      "dueDate": "2023-05-10",
+      "isTaken": true,
+      "hora": "10:00"
+    }
+]

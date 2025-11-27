@@ -23,7 +23,7 @@ export default function PaginaInicial() {
                 <CardHome title="Localização" subtitle="Unidades mais próximas de você!" nameIcon="map" />
             </Pressable>
 
-            <Pressable style={styles.cardPressable}>
+            <Pressable style={styles.cardPressable} onPress={() => router.navigate('/(drawer)/(tabs)/carteiraPaciente')}>
                 <CardHome title="Minha Carteira Online" subtitle="Confira as vacinas disponíveis!" nameIcon="wallet" />
             </Pressable>
 
