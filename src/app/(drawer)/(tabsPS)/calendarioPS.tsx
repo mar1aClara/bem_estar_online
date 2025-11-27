@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import AgendamentoCalendar from '@/components/AgendamentoCalendar/AgendamentoCalendar';
+import AgendamentoCalendar from '@/components/AgendamentoCalendar/AgendamentoCalendarPS';
 import SetaVoltar from '@/components/SetaVoltar'; 
 
-export default function Calendario() {
+export default function CalendarioPS() {
   return (
     <View style={styles.container}>
        <SetaVoltar/>

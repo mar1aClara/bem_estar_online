@@ -22,7 +22,7 @@ export default function LoginScreen() {
       router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
     } else if (numericLogin.length === 14) {
       // Exemplo: usuário empresa
-      router.navigate('/(drawer)/(tabs)/paginaInicialPostoSaude');
+      router.navigate('/(drawer)/(tabsPS)/paginaInicialPostoSaude');
     } else {
       Alert.alert('Digite um login válido.');
     }

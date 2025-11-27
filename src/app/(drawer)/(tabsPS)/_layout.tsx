@@ -17,12 +17,29 @@ export default function LayoutTabs() {
         }}>
 
             <Tabs.Screen 
-                name="paginaInicialPaciente" 
+                name="paginaInicialPostoSaude" 
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="home" size={24} color={color} />
                     ),
                     tabBarLabel: "Início",
+                }}
+            />
+
+            <Tabs.Screen
+                name="chatPS"
+                options={{
+                    tabBarItemStyle: { display: 'none' },
+                }}
+            />
+
+            <Tabs.Screen
+                name="calendarioPS"
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="calendar" size={24} color={color} />
+                    ),
+                    tabBarLabel: "Calendário",
                 }}
             />
 
@@ -36,35 +53,17 @@ export default function LayoutTabs() {
                 }}
             />
 
-            <Tabs.Screen
-                name="chat"
-                options={{
-                    tabBarItemStyle: { display: 'none' },
-                }}
-            />
-
-            <Tabs.Screen
-                name="calendario"
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="calendar" size={24} color={color} />
-                    ),
-                    tabBarLabel: "Calendário",
-                }}
-            />
-
-            <Tabs.Screen
-                name="perfil"
+            {/* <Tabs.Screen
+                name="perfilPS"
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account-circle-outline" size={24} color={color} />
                     ),
                     tabBarLabel: "Perfil",
                 }}
-            />
+            /> */}
 
         </Tabs>
-
     )
 }
 
