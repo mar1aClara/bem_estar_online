@@ -1,24 +1,61 @@
+import { useProfile } from "@/components/Context/ProfileContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function EditarPerfil() {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Editar Perfil</Text>
-            <View style={styles.profileCard}>
-                <View style={styles.profileCircle}>
-                    <MaterialCommunityIcons name="account" size={55} color="#fff" />
-                    <TouchableOpacity style={styles.alterarButton}>
-                        <Text style={styles.alterarLabel}>Alterar imagem</Text>
-                    </TouchableOpacity>
+    const { profile, updateProfile } = useProfile();
 
-                </View>
+    const [nome, setNome] = useState(profile.nome);
+    const [foto, setFoto] = useState<string | null>(profile.foto);
+
+    async function escolherFoto() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.8,
+        });
+
+        if (!result.canceled) {
+            setFoto(result.assets[0].uri);
+        }
+    }
+    return (
+
+        <View style={styles.container}>
+
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>Editar Perfil</Text>
             </View>
+
+            <View style={styles.profileCard}>
+                
+                <View style={styles.profileCircle}>
+                    {foto ? (
+                        <Image
+                            source={{ uri: foto }}
+                            style={{ width: 90, height: 90, borderRadius: 100 }}
+                        />
+                    ) : (
+                        <MaterialCommunityIcons name="account" size={55} color="#fff" />
+                    )}
+                </View>
+
+                <TouchableOpacity style={styles.alterarButton} onPress={escolherFoto}>
+                    <Text style={styles.alterarLabel}>Alterar imagem</Text>
+                </TouchableOpacity>
+
+            </View>
+
             <View style={styles.form}>
+
                 <Text style={styles.label}>Nome</Text>
                 <TextInput
+                    value={nome}
+                    onChangeText={setNome}
                     placeholder="Digite seu nome"
                     placeholderTextColor="#ccc"
                     style={styles.input}
@@ -42,28 +79,43 @@ export default function EditarPerfil() {
 
                 <TouchableOpacity
                     style={styles.saveButton}
-                    onPress={() => router.back()} // volta pra tela anterior
+                    onPress={() => {
+                        updateProfile({ nome, foto });
+                        router.back();
+                    }}
                 >
                     <Text style={styles.saveButtonText}>Salvar</Text>
                 </TouchableOpacity>
             </View>
+            
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    // scrollContainer: {
+    //     alignItems: "center",
+    //     paddingBottom: 100,
+    // },
     container: {
         flex: 1,
         backgroundColor: "#0c0346",
         alignItems: "center",
-        paddingTop: 80,
+        paddingTop: 60,
+        gap: 20,
     },
-    title: {
-        fontSize: 22,
+     header: {
+        width: "90%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    headerTitle: {
         color: "#fff",
         fontWeight: "bold",
-        marginBottom: 30,
+        fontSize: 16,
     },
+   
     profileCard: {
         backgroundColor: "#1c2d6b",
         borderRadius: 15,
@@ -79,8 +131,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 10,
     },
-    profileCircle: {
-        backgroundColor: "#3f638e",
+    profileCircle: {  
         borderRadius: 100,
         width: 90,
         height: 90,
@@ -88,10 +139,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     alterarButton: {
-
+        backgroundColor: "#28578e",
+        paddingBottom: 10,
+        paddingHorizontal: 15,
+        marginTop: 10,
+        borderRadius: 8,
+       
     },
     form: {
-        width: "85%",
+        width: "90%",
         backgroundColor: "#1c2d6b",
         borderRadius: 15,
         padding: 20,

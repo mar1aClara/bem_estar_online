@@ -1,5 +1,5 @@
 import CardArtigo from "@/components/CardArtigo";
-import { useProfile } from "@/components/Context/ProfileContext";
+import { useUnidade } from "@/components/ContextPS/UnidadeContext";
 import ModalCard from "@/components/ModalCard";
 import Rodape from "@/components/Rodape";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ type ArtigoType = {
 };
 
 export default function PaginaInicial() {
-    const { profile } = useProfile();
+    const { unidade } = useUnidade();
     const artigos: ArtigoType[] = require("@/json/artigos.json");
     const [artigoSelecionado, setArtigoSelecionado] = useState<ArtigoType | null>(null);
 
@@ -32,16 +32,13 @@ export default function PaginaInicial() {
                     <View style={{ width: "100%", alignItems: "center" }}>
                         <View style={styles.header}>
                             <Text style={styles.headerTitle}>Minha página</Text>
-                            <View style={styles.headerRight}>
-                                <MaterialCommunityIcons name="pill" size={22} color="#fff" />
-                                <MaterialCommunityIcons name="pen" size={22} color="#fff" />
-                            </View>
+                            
                         </View>
 
                         <View style={styles.profileCard}>
-                            {profile.foto ? (
+                            {unidade.foto ? (
                                 <Image
-                                    source={{ uri: profile.foto }}
+                                    source={{ uri: unidade.foto }}
                                     style={{ width: 90, height: 90, borderRadius: 100 }}
                                 />
                             ) : (
@@ -49,17 +46,17 @@ export default function PaginaInicial() {
                             )}
                             <TouchableOpacity
                                 style={styles.editButton}
-                                onPress={() => router.navigate("/editar/editarPaciente")}
+                                onPress={() => router.navigate("/editar/editarPS")}
                             >
                                 <Text style={styles.editText}>Editar</Text>
                             </TouchableOpacity>
-                            <Text style={styles.profileName}>{profile.nome}</Text>
+                            <Text style={styles.profileName}>{unidade.nome}</Text>
                         </View>
 
                         <View style={styles.articleSection}>
                             <Text style={styles.articleTitle}>Artigos para você</Text>
                         </View>
-                        </View>
+                    </View>
                     </>
                 }
                 renderItem={({ item }) => (
@@ -116,11 +113,6 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
         fontSize: 16,
-    },
-    headerRight: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
     },
     profileCard: {
         backgroundColor: "#1c2d6b",

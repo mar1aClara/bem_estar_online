@@ -53,7 +53,17 @@ export default function LayoutTabs() {
                 }}
             />
 
-            {/* <Tabs.Screen
+            <Tabs.Screen
+                name = "carteiraUnidadeSaude"
+                options={{
+                    tabBarIcon: ({color}) => (
+                        <MaterialCommunityIcons name="badge-account-horizontal" size={24} color={color}/>
+                    ),
+                    tabBarLabel:"Carteira"
+                }}
+            />
+
+            <Tabs.Screen
                 name="perfilPS"
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -61,7 +71,7 @@ export default function LayoutTabs() {
                     ),
                     tabBarLabel: "Perfil",
                 }}
-            /> */}
+            />
 
         </Tabs>
     )
