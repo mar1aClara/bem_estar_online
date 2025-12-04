@@ -11,14 +11,18 @@ import { TaskProviderPS } from "@/components/ContextPS/TaskProviderPS";
 
 export default function Layout() {
     return (
-        <ProfileProvider>
-            <UnidadeProvider>
-            <SafeAreaView style={styles.container}>
-                <Cabecalho />
-                <Slot />
-            </SafeAreaView>
-            </UnidadeProvider>
-        </ProfileProvider>
+        <TaskProvider>
+            <TaskProviderPS>
+                <ProfileProvider>
+                    <UnidadeProvider>
+                    <SafeAreaView style={styles.container}>
+                        <Cabecalho />
+                        <Slot />
+                    </SafeAreaView>
+                    </UnidadeProvider>
+                </ProfileProvider>
+            </TaskProviderPS>
+        </TaskProvider>
 
     )
 }
