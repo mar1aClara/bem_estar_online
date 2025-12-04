@@ -1,20 +1,27 @@
 import Cabecalho from "@/components/Cabecalho";
+import { ProfileProvider } from "@/components/Context/ProfileContext";
+import { UnidadeProvider } from "@/components/ContextPS/UnidadeContext";
 import { Slot } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Layout(){
-    return(
-        <SafeAreaView style={styles.container}>
-            <Cabecalho/>
-            <Slot/>
-        </SafeAreaView>
+export default function Layout() {
+    return (
+        <ProfileProvider>
+            <UnidadeProvider>
+            <SafeAreaView style={styles.container}>
+                <Cabecalho />
+                <Slot />
+            </SafeAreaView>
+            </UnidadeProvider>
+        </ProfileProvider>
+
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         backgroundColor: "#091942",
     }

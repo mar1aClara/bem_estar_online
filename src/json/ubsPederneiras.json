@@ -1,0 +1,62 @@
+[
+    {
+      "nome": "Centro de Atenção à Saúde da Criança Kauã Grassi Martins",
+      "endereco_busca": "Kauã Grassi Martins",
+      "latitude": -22.34173159824344,
+      "longitude": -48.764980927609045
+    },
+    {
+      "nome": "Centro de Saúde da Mulher",
+      "endereco_busca": "Saúde da Mulher",
+      "latitude": -22.342078976941004,
+      "longitude": -48.765301528076094
+    },
+    {
+      "nome": "Núcleo de Saúde Oswaldo Nachbar",
+      "endereco_busca": "Maria Elena",
+      "latitude": -22.327566688344312,
+      "longitude": -48.801608974175664
+    },
+    {
+      "nome": "Posto de Saúde Júlio Bertolini",
+      "endereco_busca": "Júlio Bertolini Michel Neme",
+      "latitude": -22.343833393232003,
+      "longitude": -48.79300222390713
+    },
+    {
+      "nome": "Unidade de Saúde Florindo da Silva",
+      "endereco_busca": "Guaianas Florindo da Silva",
+      "latitude": -22.309547302449058,
+      "longitude": -48.89123257047433
+    },
+    {
+      "nome": "Centro de Saúde Joaquim Cortegoso",
+      "endereco_busca": "Postão Joaquim Cortegoso",
+      "latitude": -22.350516842683856,
+      "longitude": -48.7749526741749
+    },
+    {
+      "nome": "Espaço Saúde Lara F. A. Beltramini",
+      "endereco_busca": "Lara F. A. Beltramini",
+      "latitude": -22.341716734112463,
+      "longitude": -48.764447939786486
+    },
+    {
+      "nome": "Posto de Saúde Lydia Rosin Alves",
+      "endereco_busca": "Cidade Nova Lydia Rosin Alves",
+      "latitude": -22.322393282460272,
+      "longitude": -48.797875531847446
+    },
+    {
+      "nome": "Unidade de Saúde Estevan Maturana",
+      "endereco_busca": "Leonor M. de Barros Estevan Maturana",
+      "latitude": -22.346129063206575,
+      "longitude": -48.75761739005437
+    },
+    {
+      "nome": "Unidade de Saúde Júlio César Silva dos Santos",
+      "endereco_busca": "Planalto Verde Júlio César Silva dos Santos",
+      "latitude": -22.36640305424409,
+      "longitude": -48.76358557417454
+    }
+  ]

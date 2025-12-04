@@ -1,9 +1,19 @@
 import React from "react";
 import {Text, Image, StyleSheet, View } from "react-native";
 
-export default function CardArtigo({ titulo, imagem }: { titulo: string; imagem: string }) {
+export default function CardArtigo({
+  titulo,
+  imagem,
+  largura = 190, 
+  altura = 160  
+}: {
+  titulo: string;
+  imagem: string;
+  largura?: number | string;
+  altura?: number | string;
+}) {
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, {width: largura, height: altura }]}>
       <Image source={{ uri: imagem }} style={styles.image} />
 
       <View style={styles.footer}>
@@ -17,8 +27,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#0D2461",
     borderRadius: 12,
-    width: 190,
-    height: 160,
     marginBottom: 16,
     overflow: "hidden"
   },
