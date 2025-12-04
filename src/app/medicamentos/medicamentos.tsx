@@ -1,11 +1,13 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, Dimensions } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
 import ListaCategorias from "@/components/CategoriaList";
+import { useReceitas } from "@/components/Context/TaskProvider";
+import Header from "@/components/Header";
 import ItemCard from "@/components/ProdutoCard";
 import dadosMedicamentos from "@/json/medicamentos.js";
-import Header from "@/components/Header";
+import { FontAwesome } from '@expo/vector-icons';
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Dimensions, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+
 
 const { width } = Dimensions.get('window');
 
@@ -19,6 +21,13 @@ export default function TelaVendas() {
     const [produtosData,] = useState(dadosMedicamentos);
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
+
+    // Campos do formulário de pedido/receita usados em fazerPedido
+    const [nomePaciente, setNomePaciente] = useState('');
+    const [cpfPaciente, setCpfPaciente] = useState('');
+    const [nomeMedicamento, setNomeMedicamento] = useState('');
+    const [quantidade, setQuantidade] = useState<number>(1);
+    const [observacoes, setObservacoes] = useState('');
 
     // Função para mostrar/esconder a barra de pesquisa
     const toggleSearch = () => {
@@ -58,10 +67,27 @@ export default function TelaVendas() {
         });
     };
 
+    const { adicionarReceita } = useReceitas() as { adicionarReceita?: (pedido: any) => void };
+
+    function fazerPedido() {
+        const pedido = {
+            id: Date.now().toString(),
+            paciente: nomePaciente,
+            cpf: cpfPaciente,
+            medicamento: nomeMedicamento,
+            quantidade,
+            observacoes,
+            data: new Date().toLocaleDateString("pt-BR"),
+        };
+
+        adicionarReceita?.(pedido);
+    }
+
+
     return (
         <View>
             <View>
-                <Header texto="Postinho Virtual"/>
+                <Header texto="Postinho Virtual" />
 
                 {/* Botão de Pesquisa*/}
                 <TouchableOpacity onPress={toggleSearch} style={styles.searchButton}>
@@ -95,7 +121,9 @@ export default function TelaVendas() {
                 <Text style={styles.sectionTitle}>
                     {searchText ? `"${searchText}"` : (filtroAtivo === 'Todos' ? 'Todos os Produtos' : filtroAtivo)}
                 </Text>
-
+                <Pressable onPress={()=> router.navigate('/medicamentos/verReceitas')} >
+                    <Text style={{ color: '#fff' }}>Receitas</Text>
+                </Pressable>
                 <View style={styles.grid}>
                     {produtosFiltrados.map((produto) => (
                         <ItemCard

@@ -10,7 +10,7 @@ const { width } = Dimensions.get('window');
 
 export default function DetalheMedicamento() {
     const params = useLocalSearchParams();
-    const produto = {...params} || {}; 
+    const produto = { ...(params ?? {}) };
     const [quantidade, setQuantidade] = useState(1);
     const [receitaCarregada, setReceitaCarregada] = useState(false);
     const [isSummaryVisible, setIsSummaryVisible] = useState(false); 

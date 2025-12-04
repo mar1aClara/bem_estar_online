@@ -1,8 +1,42 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import  useTaskContextPS from "@/components/ContextPS/useTaskContextPS";
 
 export default function CadastroUnidSaude() {
+
+    const { addUnidade } =  useTaskContextPS();
+
+    const [nome, setNome] = useState('');
+    const [senha, setSenha] = useState('');
+    const [confirmarSenha, setConfirmarSenha] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [cnpj, setCnpj] = useState('');
+
+    const handleSubmit = () => {
+
+        if (!nome || !senha || !confirmarSenha || !telefone || !cidade || !cnpj) {
+            alert("Por favor, preencha todos os campos.");
+            return;
+        }
+
+        if (senha !== confirmarSenha) {
+            alert("As senhas não coincidem.");
+            return;
+        }
+
+        addUnidade(nome, senha, telefone, cidade, cnpj);
+        setNome('');
+        setSenha('');
+        setConfirmarSenha('');
+        setTelefone('');
+        setCidade('');
+        setCnpj('');
+
+        router.navigate('/telaLogin/telaLogin');
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer} style={{ backgroundColor: '#0c0346' }}>
             <View style={styles.registerBox}>
@@ -15,10 +49,11 @@ export default function CadastroUnidSaude() {
                         <Text style={styles.label}>Nome da Unidade:</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder='Digite o nome da unidade de saude'
+                            placeholder='Digite o nome da unidade de saúde'
                             placeholderTextColor="#999"
+                            value={nome}
+                            onChangeText={setNome}
                         />
-
                     </View>
 
                     <View style={styles.inputColumn}>
@@ -27,7 +62,9 @@ export default function CadastroUnidSaude() {
                             style={styles.input}
                             placeholder='Digite a senha'
                             placeholderTextColor="#999"
-                            secureTextEntry={true}
+                            secureTextEntry
+                            value={senha}
+                            onChangeText={setSenha}
                         />
                     </View>
 
@@ -37,10 +74,12 @@ export default function CadastroUnidSaude() {
                             style={styles.input}
                             placeholder='Confirme sua senha'
                             placeholderTextColor="#999"
-                            secureTextEntry={true}
+                            secureTextEntry
+                            value={confirmarSenha}
+                            onChangeText={setConfirmarSenha}
                         />
                     </View>
-                    
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Telefone:</Text>
                         <TextInput
@@ -48,16 +87,19 @@ export default function CadastroUnidSaude() {
                             placeholder='Digite o telefone'
                             placeholderTextColor="#999"
                             keyboardType="phone-pad"
+                            value={telefone}
+                            onChangeText={setTelefone}
                         />
-
                     </View>
-                    
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Cidade:</Text>
                         <TextInput
                             style={styles.input}
                             placeholder='Informe a cidade'
                             placeholderTextColor="#999"
+                            value={cidade}
+                            onChangeText={setCidade}
                         />
                     </View>
 
@@ -69,23 +111,21 @@ export default function CadastroUnidSaude() {
                             placeholderTextColor="#999"
                             keyboardType="numeric"
                             maxLength={14}
+                            value={cnpj}
+                            onChangeText={setCnpj}
                         />
-
                     </View>
-
 
                 </View>
 
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => router.navigate('/telaLogin/telaLogin')}
-                >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                     <Text style={styles.buttonText}>Continuar</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
     );
 }
+
 
 const styles = StyleSheet.create({
     scrollContainer: {

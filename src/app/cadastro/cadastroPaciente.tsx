@@ -1,8 +1,36 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-
+import useTaskContext from "@/components/Context/useTaskContext";
+ 
 export default function TelaLogin() {
+
+    const { addPaciente } = useTaskContext();
+
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [cep, setCep] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [senha, setSenha] = useState('');
+    const [confirmarSenha, setConfirmarSenha] = useState('');
+
+    const submitPaciente = () => {
+        if (!nome || !email || !cep || !cidade || !telefone || !senha || !confirmarSenha) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+        addPaciente(nome, email, cep, cidade, telefone, senha);
+        setNome('');
+        setEmail('');
+        setCep('');
+        setCidade('');
+        setTelefone('');
+        setSenha('');
+        setConfirmarSenha('');
+        router.navigate('/telaLogin/telaLogin');
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer} style={{ backgroundColor: '#0c0346' }}>
             <View style={styles.loginBox}>
@@ -13,9 +41,11 @@ export default function TelaLogin() {
                         <TextInput
                             style={styles.input}
                             placeholder='Digite seu nome completo'
-                            placeholderTextColor="#999" 
+                            placeholderTextColor="#999"
+                            value={nome}
+                            onChangeText={setNome}
                         />
-
+ 
                     </View>
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>E-mail:</Text>
@@ -23,20 +53,24 @@ export default function TelaLogin() {
                             style={styles.input}
                             placeholder='Digite seu e-mail'
                             placeholderTextColor="#999"
-                            keyboardType="email-address" 
+                            keyboardType="email-address"
+                            value={email}
+                            onChangeText={setEmail}
                         />
                     </View>
-
+ 
                     <View style={styles.inputColumn}>
-                        <Text style={styles.label}>CEP:</Text>
+                        <Text style={styles.label}>CPF:</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder='Digite seu CEP'
+                            placeholder='Digite seu CPF'
                             placeholderTextColor="#999"
                             keyboardType="numeric"
-                            maxLength={9}
+                            maxLength={11}
+                            value={cep}
+                            onChangeText={setCep}
                         />
-
+ 
                     </View>
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Cidade:</Text>
@@ -44,18 +78,22 @@ export default function TelaLogin() {
                             style={styles.input}
                             placeholder='Digite sua cidade'
                             placeholderTextColor="#999"
+                            value={cidade}
+                            onChangeText={setCidade}
                         />
                     </View>
-
+ 
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Telefone:</Text>
                         <TextInput
                             style={styles.input}
                             placeholder='Digite seu telefone'
                             placeholderTextColor="#999"
-                            keyboardType="phone-pad" 
+                            keyboardType="phone-pad"
+                            value={telefone}
+                            onChangeText={setTelefone}
                         />
-
+ 
                     </View>
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Senha:</Text>
@@ -64,9 +102,11 @@ export default function TelaLogin() {
                             placeholder='Digite sua senha'
                             placeholderTextColor="#999"
                             secureTextEntry={true}
+                            value={senha}
+                            onChangeText={setSenha}
                         />
                     </View>
-
+ 
                      <View style={styles.inputColumnFull}>
                         <Text style={styles.label}>Confirme a Senha:</Text>
                         <TextInput
@@ -74,22 +114,24 @@ export default function TelaLogin() {
                             placeholder='Confirme sua senha'
                             placeholderTextColor="#999"
                             secureTextEntry={true}
+                            value={confirmarSenha}
+                            onChangeText={setConfirmarSenha}
                         />
                     </View>
-
+ 
                 </View>
-
-                <TouchableOpacity 
-                    style={styles.button} 
-                    onPress={() => router.navigate('/telaLogin/telaLogin')}
+ 
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={submitPaciente}
                 >
-                    <Text style={styles.buttonText}>Continuar</Text>
-                </TouchableOpacity>
+                    <Text style={styles.buttonText}>Salvar</Text>
+                 </TouchableOpacity>
             </View>
         </ScrollView>
     );
 }
-
+ 
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
@@ -111,42 +153,42 @@ const styles = StyleSheet.create({
         elevation: 9,
     },
     loginTitle: {
-        fontSize: 24, 
+        fontSize: 24,
         color: '#fff',
-        fontWeight: '900', 
+        fontWeight: '900',
         textAlign: 'center',
         marginBottom: 30,
-        borderBottomWidth: 2, 
+        borderBottomWidth: 2,
         borderBottomColor: '#28578e',
         paddingBottom: 5,
     },
-
+ 
     inputGrid: {
         flexDirection: 'row',
-        flexWrap: 'wrap', 
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
     },
-    
+   
     inputColumn: {
-        width: '48%', 
+        width: '48%',
         marginBottom: 10,
     },
-    
+   
     inputColumnFull: {
-        width: '100%', 
+        width: '100%',
         marginBottom: 10,
     },
-    
+   
     label: {
         fontSize: 16,
         color: '#fff',
         fontWeight: 'bold',
         marginTop: 5,
     },
-
+ 
     input: {
-        backgroundColor: '#f0f4f8', 
-        borderRadius: 8, 
+        backgroundColor: '#f0f4f8',
+        borderRadius: 8,
         padding: 12,
         marginTop: 4,
         fontSize: 14,
@@ -158,27 +200,27 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 15,
         alignItems: 'center',
-        marginTop: 25, 
+        marginTop: 25,
         width: '80%',
         alignSelf: 'center',
         shadowColor: "#000",
         shadowRadius: 3.84,
         elevation: 5,
     },
-    
+   
     buttonText: {
         color: '#fff',
         fontWeight: '900',
-        fontSize: 20, 
+        fontSize: 20,
     },
-
+ 
     linkContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 25,
         paddingHorizontal: 5,
     },
-
+ 
     link: {
         color: '#e0e8ff',
         textDecorationLine: 'underline',
@@ -186,3 +228,4 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
 });
+ 

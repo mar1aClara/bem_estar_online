@@ -1,40 +1,80 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-
+import { TaskProvider } from '@/components/Context/TaskProvider';
+import useTaskContext from '@/components/Context/useTaskContext';
+import { TaskProviderPS } from '@/components/ContextPS/TaskProviderPS';
+import useTaskContextPS from '@/components/ContextPS/useTaskContextPS';
+ 
 export default function LoginScreen() {
   const router = useRouter();
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
+  const { pacientes } = useTaskContext(TaskProvider);
+  const { unidades } = useTaskContextPS(TaskProviderPS);
 
-  function handleLogin() {
-    if (login.trim() === '' || senha.trim() === '') {
-      Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+
+
+ 
+ function handleLogin() {
+  if (login.trim() === '' || senha.trim() === '') {
+    Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+    return;
+  }
+
+  const numericLogin = login.replace(/\D/g, '');
+
+  // CPF = 11 dígitos → Paciente
+  if (numericLogin.length === 11) {
+    const pacienteEncontrado = pacientes.find(
+      p =>
+        p.cep.replace(/\D/g, '') === numericLogin &&
+        p.senha === senha
+    );
+
+    if (!pacienteEncontrado) {
+      Alert.alert("Erro", "CPF ou senha incorretos.");
+      setLogin('');
+      setSenha('');
       return;
     }
 
-    // Remove caracteres não numéricos do CPF/CNPJ
-    const numericLogin = login.replace(/\D/g, '');
-
-    // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)
-    if (numericLogin.length === 11) {
-      // Exemplo: usuário pessoa física
-      router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
-    } else if (numericLogin.length === 14) {
-      // Exemplo: usuário empresa
-      router.navigate('/(drawer)/(tabsPS)/paginaInicialPostoSaude');
-    } else {
-      Alert.alert('Digite um login válido.');
-    }
+    // Login OK → Paciente
+    router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
+    return;
   }
 
-  const isFormValid = login.trim() !== '' && senha.trim() !== '';
+  // CNPJ = 14 dígitos → Unidade de Saúde
+  if (numericLogin.length === 14) {
+    const unidadeEncontrada = unidades.find(
+      u =>
+        u.cnpj.replace(/\D/g, '') === numericLogin &&
+        u.senha === senha
+    );
 
+    if (!unidadeEncontrada) {
+      Alert.alert("Erro", "CNPJ ou senha incorretos.");
+      setLogin('');
+      setSenha('');
+      return;
+    }
+
+    // Login OK → Unidade
+    router.navigate('/(drawer)/(tabsPS)/paginaInicialPostoSaude');
+    return;
+  }
+
+  Alert.alert("Erro", "Digite um CPF ou CNPJ válido.");
+}
+
+ 
+  const isFormValid = login.trim() !== '' && senha.trim() !== '';
+ 
   return (
     <View style={styles.container}>
       <View style={styles.loginBox}>
         <Text style={styles.loginTitle}>LOGIN</Text>
-
+ 
         <Text style={styles.label}>Login:</Text>
         <TextInput
           style={styles.input}
@@ -43,7 +83,7 @@ export default function LoginScreen() {
           onChangeText={setLogin}
           keyboardType="numeric"
         />
-
+ 
         <Text style={styles.label}>Senha:</Text>
         <TextInput
           style={styles.input}
@@ -52,7 +92,7 @@ export default function LoginScreen() {
           value={senha}
           onChangeText={setSenha}
         />
-
+ 
         <TouchableOpacity
           style={[
             styles.button,
@@ -63,12 +103,12 @@ export default function LoginScreen() {
         >
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
-
+ 
         <View style={styles.linkContainer}>
           <TouchableOpacity onPress={() => router.navigate('/cadastro/cadastroEscolha')}>
             <Text style={styles.link}>Cadastre-se</Text>
           </TouchableOpacity>
-
+ 
           <TouchableOpacity onPress={() => router.navigate('/senha/esqueciSenha')}>
             <Text style={styles.link}>Esqueci a senha.</Text>
           </TouchableOpacity>
@@ -77,8 +117,8 @@ export default function LoginScreen() {
     </View>
   );
 }
-
-
+ 
+ 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -134,3 +174,4 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     },
 })
+ 

@@ -19,7 +19,6 @@ type Appointments = {
     [date: string]: AppointmentDetail[];
 };
 
-// Constantes de horário (mantidas, mas menos relevantes na visão do paciente)
 const START_HOUR = 6;
 const END_HOUR = 17;
 const SLOT_DURATION_MINUTES = 15;
@@ -133,12 +132,12 @@ export default function AgendamentoCalendar() {
                     }}
                 />
 
-                <View 
+                <View
                     style={{
-                        height: 1, 
-                        backgroundColor: '#ddd', 
-                        marginHorizontal: 15 
-                    }} 
+                        height: 1,
+                        backgroundColor: '#ddd',
+                        marginHorizontal: 15
+                    }}
                 />
 
                 <View style={styles.infoContainer}>
@@ -209,6 +208,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingVertical: 20,
         fontWeight: 'bold',
+    },
+    headerRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        backgroundColor: "#fff",
+        marginBottom: 10,
+    },
+
+    headerTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
+        color: "#0c0346",
+        marginLeft: 20,
     },
     centeredView: {
         flex: 1,

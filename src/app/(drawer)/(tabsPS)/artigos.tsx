@@ -19,7 +19,6 @@ export default function Artigos() {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.container2}>
         <FlatList
           data={artigos}
@@ -43,8 +42,7 @@ export default function Artigos() {
             onClose={() => setArtigoSelecionado(null)}
           />
         )}
-      </View>
-        
+      </View>  
     </View>
   );
 }

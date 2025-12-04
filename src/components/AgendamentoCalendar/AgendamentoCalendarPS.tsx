@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList, Alert, TextInput, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import {
+    View, Text, StyleSheet, Pressable, FlatList, Alert, TextInput,
+    ScrollView, Modal, ActivityIndicator, TouchableOpacity
+} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';
+import useTaskContext from '@/components/Context/useTaskContext'; // <-- IMPORT DO CONTEXTO DE PACIENTES
 
 const STORAGE_KEY = '@MyApp:BookedAppointments';
 
@@ -44,18 +48,27 @@ const filterExpiredAppointments = (appointments: Appointments): Appointments => 
 };
 
 export default function AgendamentoCalendarPS() {
+    const { pacientes } = useTaskContext(); // <-- pega o array de pacientes do TaskProvider
+
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [bookedAppointments, setBookedAppointments] = useState<Appointments>({});
     const [availableSlots, setAvailableSlots] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [slotToBook, setSlotToBook] = useState<string | null>(null);
+
+    // campos do modal
     const [patientName, setPatientName] = useState('');
     const [patientPhone, setPatientPhone] = useState('');
     const [patientCPF, setPatientCPF] = useState('');
     const [patientConsult, setPatientConsult] = useState('');
+
+    // controle de edição
     const [isEditing, setIsEditing] = useState(false);
     const [appointmentToEdit, setAppointmentToEdit] = useState<AppointmentDetail & { originalIsoTime: string } | null>(null);
+
+    // indica se o CPF foi verificado com sucesso (encontrado no cadastro)
+    const [cpfVerified, setCpfVerified] = useState(false);
 
     const closeModal = () => {
         setModalVisible(false);
@@ -66,6 +79,7 @@ export default function AgendamentoCalendarPS() {
         setPatientCPF('');
         setPatientPhone('');
         setPatientConsult('');
+        setCpfVerified(false);
     };
 
     const saveAppointments = async (newAppointments: Appointments) => {
@@ -147,28 +161,74 @@ export default function AgendamentoCalendarPS() {
         setPatientCPF('');
         setPatientPhone('');
         setPatientConsult('');
+        setCpfVerified(false);
         setModalVisible(true);
     };
 
+    // -------------------------
+    // VERIFICAR CPF (botão ao lado do input)
+    // -------------------------
+    const verifyCPF = () => {
+        const numericCpf = (patientCPF || '').replace(/\D/g, '');
+        if (numericCpf.length !== 11) {
+            Alert.alert("CPF inválido", "Digite um CPF com 11 dígitos.");
+            setCpfVerified(false);
+            return;
+        }
+
+        // procura o paciente no contexto (cep é onde você guarda o CPF)
+        const paciente = pacientes.find(p => (p.cep || '').replace(/\D/g, '') === numericCpf);
+
+        if (!paciente) {
+            Alert.alert("Não encontrado", "Nenhum paciente encontrado com esse CPF. Cadastre o paciente primeiro.");
+            setCpfVerified(false);
+            setPatientName('');
+            setPatientPhone('');
+            return;
+        }
+
+        // preenche campos do modal e marca como verificado
+        setPatientName(paciente.nome || '');
+        setPatientPhone(paciente.telefone || '');
+        setCpfVerified(true);
+        Alert.alert("Paciente encontrado", `${paciente.nome} carregado.`);
+    };
+
     const handleConfirmAction = () => {
+        // validação: exige data, horário, e campos obrigatórios
         if (!selectedDate || !slotToBook || !patientName.trim() || !patientCPF.trim() || !patientConsult.trim()) {
             Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios (Nome, CPF e Qual a consulta?).");
             return;
         }
 
-        // 1. Cria o novo objeto de agendamento (editado ou novo)
-        const [hourStr, minuteStr] = slotToBook.split(':');
-        const newDate = new Date(selectedDate);
-        newDate.setHours(parseInt(hourStr), parseInt(minuteStr), 0, 0);
+        // exige que o CPF tenha sido verificado (encontrado no cadastro)
+        if (!cpfVerified) {
+            // tenta verificar automaticamente antes de bloquear
+            const numericCpf = patientCPF.replace(/\D/g, '');
+            const paciente = pacientes.find(p => (p.cep || '').replace(/\D/g, '') === numericCpf);
+            if (!paciente) {
+                Alert.alert("Erro", "CPF não encontrado no cadastro. Clique em Verificar CPF antes de confirmar.");
+                return;
+            }
+            // se encontrou, preenche e marca verificado
+            setPatientName(paciente.nome || '');
+            setPatientPhone(paciente.telefone || '');
+            setCpfVerified(true);
+        }
+
+        // cria o novo objeto de agendamento (editado ou novo)
+        const [hourStr, minuteStr] = (slotToBook as string).split(':');
+        const newDate = new Date(selectedDate as string);
+        newDate.setHours(parseInt(hourStr, 10), parseInt(minuteStr, 10), 0, 0);
         const newAppointmentISO = newDate.toISOString();
 
         const newAppointment: AppointmentDetail = {
-            time: slotToBook,
+            time: slotToBook as string,
             patientName: patientName.trim(),
             patientPhone: patientPhone.trim(),
             patientCPF: patientCPF.trim(),
             patientConsult: patientConsult.trim(),
-            date: selectedDate,
+            date: selectedDate as string,
             isoTime: newAppointmentISO,
         };
 
@@ -189,19 +249,19 @@ export default function AgendamentoCalendarPS() {
             }
 
             const appointmentsOnNewDate = [
-                ...(updatedAppointments[selectedDate] || []),
+                ...(updatedAppointments[selectedDate as string] || []),
                 newAppointment,
             ].sort((a, b) => a.isoTime.localeCompare(b.isoTime));
 
-            updatedAppointments[selectedDate] = appointmentsOnNewDate;
+            updatedAppointments[selectedDate as string] = appointmentsOnNewDate;
 
             Alert.alert("Sucesso!", `Agendamento de ${patientName} editado com sucesso.`);
 
         } else {
             updatedAppointments = {
                 ...bookedAppointments,
-                [selectedDate]: [
-                    ...(bookedAppointments[selectedDate] || []),
+                [selectedDate as string]: [
+                    ...(bookedAppointments[selectedDate as string] || []),
                     newAppointment,
                 ].sort((a, b) => a.isoTime.localeCompare(b.isoTime)),
             };
@@ -254,6 +314,16 @@ export default function AgendamentoCalendarPS() {
         setPatientConsult(appToEdit.patientConsult);
         setAppointmentToEdit({ ...appToEdit, originalIsoTime: appToEdit.isoTime });
         setIsEditing(true);
+
+        // tenta marcar cpfVerified se o CPF bater com algum paciente cadastrado
+        const numericCpf = (appToEdit.patientCPF || '').replace(/\D/g, '');
+        const paciente = pacientes.find(p => (p.cep || '').replace(/\D/g, '') === numericCpf);
+        if (paciente) {
+            setCpfVerified(true);
+        } else {
+            setCpfVerified(false);
+        }
+
         setModalVisible(true);
     };
 
@@ -353,8 +423,8 @@ export default function AgendamentoCalendarPS() {
                                 <View key={index} style={styles.agendamentoCard}>
                                     <View>
                                         <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Data/Hora:</Text> {app.date} às {app.time}</Text>
-                                        <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Paciente:</Text> {app.patientName}</Text>
                                         <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>CPF:</Text> {app.patientCPF}</Text>
+                                        <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Paciente:</Text> {app.patientName}</Text>
                                         <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Consulta:</Text> {app.patientConsult}</Text>
                                         <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Tel:</Text> {app.patientPhone || 'N/A'}</Text>
                                     </View>
@@ -397,21 +467,29 @@ export default function AgendamentoCalendarPS() {
                             style={styles.input}
                             placeholder="Nome Completo do Paciente (Obrigatório)"
                             value={patientName}
-                            onChangeText={setPatientName}
+                            onChangeText={text => { setPatientName(text); setCpfVerified(false); }} // se tocar no nome, invalida verificação
                         />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="CPF (Obrigatório)"
-                            value={patientCPF}
-                            onChangeText={setPatientCPF}
-                            keyboardType="numeric"
-                            maxLength={11}
-                        />
+
+                        {/* CPF + botão Verificar (lado a lado) */}
+                        <View style={styles.cpfRow}>
+                            <TextInput
+                                style={[styles.input, { flex: 1 }]}
+                                placeholder="CPF (Obrigatório)"
+                                value={patientCPF}
+                                onChangeText={text => { setPatientCPF(text); setCpfVerified(false); }}
+                                keyboardType="numeric"
+                                maxLength={11}
+                            />
+                            <TouchableOpacity style={[styles.verifyBtn, cpfVerified ? styles.verifyBtnActive : null]} onPress={verifyCPF}>
+                                <Text style={styles.verifyText}>{cpfVerified ? 'Verificado' : 'Verificar'}</Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <TextInput
                             style={styles.input}
                             placeholder="Telefone (Opcional)"
                             value={patientPhone}
-                            onChangeText={setPatientPhone}
+                            onChangeText={text => { setPatientPhone(text); }}
                             keyboardType="phone-pad"
                             maxLength={11}
                         />
@@ -447,7 +525,7 @@ export default function AgendamentoCalendarPS() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '##0c0346',
+        backgroundColor: '#0c0346', // ajustei para cor parecida com seu app
     },
     infoContainer: {
         padding: 15,
@@ -463,7 +541,7 @@ const styles = StyleSheet.create({
         flexGrow: 0,
     },
     slotButton: {
-        backgroundColor: '#0078ff',
+        backgroundColor: '#28578e',
         padding: 8,
         borderRadius: 8,
         margin: 4,
@@ -527,36 +605,56 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 20,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '90%',
+        width: '92%',
     },
     modalTitle: {
-        marginBottom: 15,
+        marginBottom: 8,
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#0c0346',
     },
     modalSubtitle: {
-        marginBottom: 20,
+        marginBottom: 12,
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 14,
         color: '#333',
     },
+    cpfRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+    },
     input: {
-        height: 40,
+        height: 44,
         width: '100%',
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 8,
-        marginBottom: 15,
+        marginBottom: 12,
         paddingHorizontal: 10,
+        backgroundColor: '#fff',
+    },
+    verifyBtn: {
+        marginLeft: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        backgroundColor: '#28578e',
+        borderRadius: 8,
+    },
+    verifyBtnActive: {
+        backgroundColor: '#2e9e5a'
+    },
+    verifyText: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
     modalButtonContainer: {
         flexDirection: 'row',
@@ -573,7 +671,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonConfirm: {
-        backgroundColor: '#0078ff',
+        backgroundColor: '#28578e',
     },
     buttonCancel: {
         backgroundColor: '#ccc',
