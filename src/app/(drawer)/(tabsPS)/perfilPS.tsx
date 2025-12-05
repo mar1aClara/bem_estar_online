@@ -29,34 +29,34 @@ export default function PaginaInicial() {
                 columnWrapperStyle={styles.flatListRow}
                 ListHeaderComponent={
                     <>
-                    <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Minha página</Text>
-                            
-                        </View>
+                        <View style={{ width: "100%", alignItems: "center" }}>
+                            <View style={styles.header}>
+                                <Text style={styles.headerTitle}>Minha página</Text>
 
-                        <View style={styles.profileCard}>
-                            {unidade.foto ? (
-                                <Image
-                                    source={{ uri: unidade.foto }}
-                                    style={{ width: 90, height: 90, borderRadius: 100 }}
-                                />
-                            ) : (
-                                <MaterialCommunityIcons name="account" size={55} color="#fff" />
-                            )}
-                            <TouchableOpacity
-                                style={styles.editButton}
-                                onPress={() => router.navigate("/editar/editarPS")}
-                            >
-                                <Text style={styles.editText}>Editar</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.profileName}>{unidade.nome}</Text>
-                        </View>
+                            </View>
 
-                        <View style={styles.articleSection}>
-                            <Text style={styles.articleTitle}>Artigos para você</Text>
+                            <View style={styles.profileCard}>
+                                {unidade.foto ? (
+                                    <Image
+                                        source={{ uri: unidade.foto }}
+                                        style={{ width: 90, height: 90, borderRadius: 100 }}
+                                    />
+                                ) : (
+                                    <MaterialCommunityIcons name="account" size={55} color="#fff" />
+                                )}
+                                <TouchableOpacity
+                                    style={styles.editButton}
+                                    onPress={() => router.navigate("/editar/editarPS")}
+                                >
+                                    <Text style={styles.editText}>Editar</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.profileName}>{unidade.nome}</Text>
+                            </View>
+
+                            <View style={styles.articleSection}>
+                                <Text style={styles.articleTitle}>Artigos para você</Text>
+                            </View>
                         </View>
-                    </View>
                     </>
                 }
                 renderItem={({ item }) => (
@@ -76,6 +76,9 @@ export default function PaginaInicial() {
                     <>
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10 }} onPress={() => router.navigate('/artigos')}>
                             <Text style={styles.verMais}>Ver todos os artigos</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonExit} onPress={() => router.replace('/telaLogin/telaLogin')} >
+                            <Text style={styles.textButtonExit}>Sair </Text>
                         </TouchableOpacity>
                         <Rodape />
                     </>
@@ -108,6 +111,20 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 20,
+    },
+    buttonExit: {
+        marginTop: 10,
+        backgroundColor: "#ea4343ff",
+        paddingVertical: 10,
+        paddingHorizontal: 40,
+        borderRadius: 8,
+        alignSelf: "center",
+    },
+
+    textButtonExit: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
     },
     headerTitle: {
         color: "#fff",

@@ -29,36 +29,37 @@ export default function PaginaInicial() {
                 columnWrapperStyle={styles.flatListRow}
                 ListHeaderComponent={
                     <>
-                    <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Minha página</Text>
-                            <View style={styles.headerRight}>
-                                <MaterialCommunityIcons name="pill" size={22} color="#fff" />
-                                <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                        <View style={{ width: "100%", alignItems: "center" }}>
+                            <View style={styles.header}>
+                                <Text style={styles.headerTitle}>Minha página</Text>
+                                <View style={styles.headerRight}>
+                                    <MaterialCommunityIcons name="pill" size={22} color="#fff" />
+                                    <TouchableOpacity onPress={() => router.navigate("/medicamentos/verReceitas")}>
+                                        <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                                    </TouchableOpacity>
+
+                                </View>
                             </View>
-                        </View>
-
-                        <View style={styles.profileCard}>
-                            {profile.foto ? (
-                                <Image
-                                    source={{ uri: profile.foto }}
-                                    style={{ width: 90, height: 90, borderRadius: 100 }}
-                                />
-                            ) : (
-                                <MaterialCommunityIcons name="account" size={55} color="#fff" />
-                            )}
-                            <TouchableOpacity
-                                style={styles.editButton}
-                                onPress={() => router.navigate("/editar/editarPaciente")}
-                            >
-                                <Text style={styles.editText}>Editar</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.profileName}>{profile.nome}</Text>
-                        </View>
-
-                        <View style={styles.articleSection}>
-                            <Text style={styles.articleTitle}>Artigos para você</Text>
-                        </View>
+                            <View style={styles.profileCard}>
+                                {profile.foto ? (
+                                    <Image
+                                        source={{ uri: profile.foto }}
+                                        style={{ width: 90, height: 90, borderRadius: 100 }}
+                                    />
+                                ) : (
+                                    <MaterialCommunityIcons name="account" size={55} color="#fff" />
+                                )}
+                                <TouchableOpacity
+                                    style={styles.editButton}
+                                    onPress={() => router.navigate("/editar/editarPaciente")}
+                                >
+                                    <Text style={styles.editText}>Editar</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.profileName}>{profile.nome}</Text>
+                            </View>
+                            <View style={styles.articleSection}>
+                                <Text style={styles.articleTitle}>Artigos para você</Text>
+                            </View>
                         </View>
                     </>
                 }
@@ -79,6 +80,9 @@ export default function PaginaInicial() {
                     <>
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10 }} onPress={() => router.navigate('/artigos')}>
                             <Text style={styles.verMais}>Ver todos os artigos</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonExit} onPress={() => router.replace('/telaLogin/telaLogin')} >
+                            <Text style={styles.textButtonExit}>Sair </Text>
                         </TouchableOpacity>
                         <Rodape />
                     </>
@@ -104,6 +108,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0346",
         paddingTop: 60,
         alignItems: "center",
+    },
+    buttonExit: {
+        marginTop: 10,
+        backgroundColor: "#ea4343ff",
+        paddingVertical: 10,
+        paddingHorizontal: 40,
+        borderRadius: 8,
+        alignSelf: "center",
+    },
+
+    textButtonExit: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
     },
     header: {
         width: "90%",

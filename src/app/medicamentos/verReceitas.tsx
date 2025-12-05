@@ -1,34 +1,41 @@
-import { useReceitas } from "@/components/Context/TaskProvider";
 import SetaVoltar from "@/components/SetaVoltar";
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import useReceita from "@/components/ContextReceita/useReceita";
+import useTaskContext from "@/components/Context/useTaskContext";
 
 export default function PedidosPacientes() {
-  const { receitas } = useReceitas();
+  const { receitas } = useReceita();
+  const { pacientes } = useTaskContext();
+
+  const pacienteLogado = pacientes[pacientes.length - 1];
+  const cpfLogado = pacienteLogado?.cep || null; 
+  const minhasReceitas = receitas.filter(r => r.cpf === cpfLogado);
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <SetaVoltar color="#fff" />
-        <Text style={styles.headerTitle}>Pedidos de Pacientes</Text>
+        <Text style={styles.headerTitle}>Minhas Receitas</Text>
       </View>
-      {(!receitas || receitas.length === 0) ? (
-        <Text style={styles.empty}>Nenhum pedido encontrado.</Text>
+
+      {(!minhasReceitas || minhasReceitas.length === 0) ? (
+        <Text style={styles.empty}>Nenhuma receita encontrada para você.</Text>
       ) : (
         <FlatList
-          data={receitas}
+          data={minhasReceitas}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Text style={styles.itemTitle}>{item.medicamento}</Text>
 
-              <Text style={styles.info}>Paciente: {item.paciente}</Text>
+              <Text style={styles.info}>Paciente: {item.nome}</Text>
               <Text style={styles.info}>CPF: {item.cpf}</Text>
-              <Text style={styles.info}>Quantidade: {item.quantidade}</Text>
-              <Text style={styles.info}>Data: {item.data}</Text>
+              <Text style={styles.info}>CRM: {item.crm}</Text>
+              <Text style={styles.info}>Médico: {item.nomeMedico}</Text>
 
-              {item.observacoes ? (
-                <Text style={styles.obs}>Obs: {item.observacoes}</Text>
+              {item.observacao ? (
+                <Text style={styles.obs}>Obs: {item.observacao}</Text>
               ) : null}
             </View>
           )}
@@ -51,27 +58,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginBottom: 10,
   },
-
   headerTitle: {
     fontSize: 26,
     fontWeight: "bold",
     color: "#ffffffff",
     marginLeft: 30,
   },
-
   empty: {
     color: "#ccc",
     marginTop: 40,
     textAlign: "center"
   },
-
   card: {
-    backgroundColor: "#1a0d63",
+    backgroundColor: "#28578e",
     padding: 15,
     borderRadius: 10,
     marginBottom: 12,
   },
-
   itemTitle: {
     color: "#fff",
     fontSize: 18,

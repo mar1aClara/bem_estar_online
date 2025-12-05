@@ -1,41 +1,89 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import useTaskContext from "@/components/Context/useTaskContext";
- 
+
 export default function TelaLogin() {
 
     const { addPaciente } = useTaskContext();
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
-    const [cep, setCep] = useState('');
+    const [cpf, setCpf] = useState('');
     const [cidade, setCidade] = useState('');
     const [telefone, setTelefone] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
+
+    // 👉 MÁSCARA CPF
+    const handleCpfMask = (value: string) => {
+        const numbers = value.replace(/\D/g, "").slice(0, 11);
+        let masked = numbers;
+
+        if (numbers.length > 3) masked = numbers.slice(0, 3) + "." + numbers.slice(3);
+        if (numbers.length > 6) masked = masked.slice(0, 7) + "." + masked.slice(7);
+        if (numbers.length > 9) masked = masked.slice(0, 11) + "-" + masked.slice(11);
+
+        setCpf(masked);
+    };
+
+    // 👉 MÁSCARA TELEFONE (00) 00000-0000
+    const handleTelefoneMask = (value: string) => {
+        const numbers = value.replace(/\D/g, "").slice(0, 11);
+
+        let masked = numbers;
+        if (numbers.length > 2) masked = "(" + numbers.slice(0, 2) + ") " + numbers.slice(2);
+        if (numbers.length > 7) masked = masked.slice(0, 10) + "-" + masked.slice(10);
+
+        setTelefone(masked);
+    };
 
     const submitPaciente = () => {
-        if (!nome || !email || !cep || !cidade || !telefone || !senha || !confirmarSenha) {
+        if (!nome || !email || !cpf || !cidade || !telefone || !senha || !confirmarSenha) {
             alert('Por favor, preencha todos os campos.');
             return;
         }
-        addPaciente(nome, email, cep, cidade, telefone, senha);
+
+        const emailValido = email.endsWith("@gmail.com") || email.endsWith("@hotmail.com");
+        if (!emailValido) {
+            alert("O e-mail precisa ser @gmail.com ou @hotmail.com");
+            return;
+        }
+
+        if (cpf.replace(/\D/g, "").length !== 11) {
+            alert("Digite um CPF válido.");
+            return;
+        }
+
+        if (senha !== confirmarSenha) {
+            alert("As senhas não coincidem!");
+            return;
+        }
+
+        // Enviar contexto
+        addPaciente(nome, email, cpf, cidade, telefone, senha);
+
         setNome('');
         setEmail('');
-        setCep('');
+        setCpf('');
         setCidade('');
         setTelefone('');
         setSenha('');
         setConfirmarSenha('');
+
         router.navigate('/telaLogin/telaLogin');
-    }
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer} style={{ backgroundColor: '#0c0346' }}>
             <View style={styles.loginBox}>
                 <Text style={styles.loginTitle}>CADASTRO PACIENTE</Text>
+
                 <View style={styles.inputGrid}>
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Nome Completo:</Text>
                         <TextInput
@@ -45,8 +93,8 @@ export default function TelaLogin() {
                             value={nome}
                             onChangeText={setNome}
                         />
- 
                     </View>
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>E-mail:</Text>
                         <TextInput
@@ -58,20 +106,19 @@ export default function TelaLogin() {
                             onChangeText={setEmail}
                         />
                     </View>
- 
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>CPF:</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder='Digite seu CPF'
+                            placeholder='000.000.000-00'
                             placeholderTextColor="#999"
                             keyboardType="numeric"
-                            maxLength={11}
-                            value={cep}
-                            onChangeText={setCep}
+                            value={cpf}
+                            onChangeText={handleCpfMask}
                         />
- 
                     </View>
+
                     <View style={styles.inputColumn}>
                         <Text style={styles.label}>Cidade:</Text>
                         <TextInput
@@ -82,56 +129,67 @@ export default function TelaLogin() {
                             onChangeText={setCidade}
                         />
                     </View>
- 
-                    <View style={styles.inputColumn}>
+
+                    {/* TELEFONE IGUAL SENHA */}
+                    <View style={styles.inputColumnFull}>
                         <Text style={styles.label}>Telefone:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Digite seu telefone'
-                            placeholderTextColor="#999"
-                            keyboardType="phone-pad"
-                            value={telefone}
-                            onChangeText={setTelefone}
-                        />
- 
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={[styles.inputNoBorder, { flex: 1, fontSize: 16 }]}
+                                placeholder='(00) 00000-0000'
+                                placeholderTextColor="#999"
+                                keyboardType="phone-pad"
+                                value={telefone}
+                                onChangeText={handleTelefoneMask}
+                            />
+                        </View>
                     </View>
-                    <View style={styles.inputColumn}>
+
+                    <View style={styles.inputColumnFull}>
                         <Text style={styles.label}>Senha:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Digite sua senha'
-                            placeholderTextColor="#999"
-                            secureTextEntry={true}
-                            value={senha}
-                            onChangeText={setSenha}
-                        />
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={[styles.inputNoBorder, { flex: 1 }]}
+                                placeholder='Digite sua senha'
+                                placeholderTextColor="#999"
+                                secureTextEntry={!mostrarSenha}
+                                value={senha}
+                                onChangeText={setSenha}
+                            />
+                            <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+                                <Ionicons name={mostrarSenha ? "eye-off" : "eye"} size={22} color="#333" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
- 
-                     <View style={styles.inputColumnFull}>
+
+                    <View style={styles.inputColumnFull}>
                         <Text style={styles.label}>Confirme a Senha:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Confirme sua senha'
-                            placeholderTextColor="#999"
-                            secureTextEntry={true}
-                            value={confirmarSenha}
-                            onChangeText={setConfirmarSenha}
-                        />
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={[styles.inputNoBorder, { flex: 1 }]}
+                                placeholder='Confirme sua senha'
+                                placeholderTextColor="#999"
+                                secureTextEntry={!mostrarConfirmarSenha}
+                                value={confirmarSenha}
+                                onChangeText={setConfirmarSenha}
+                            />
+                            <TouchableOpacity onPress={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}>
+                                <Ionicons name={mostrarConfirmarSenha ? "eye-off" : "eye"} size={22} color="#333" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
- 
+
                 </View>
- 
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={submitPaciente}
-                >
+
+                <TouchableOpacity style={styles.button} onPress={submitPaciente}>
                     <Text style={styles.buttonText}>Salvar</Text>
-                 </TouchableOpacity>
+                </TouchableOpacity>
+
             </View>
         </ScrollView>
     );
 }
- 
+
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
@@ -142,15 +200,10 @@ const styles = StyleSheet.create({
     },
     loginBox: {
         backgroundColor: '#678ab2',
-        borderRadius: 15,
+        borderRadius: 20,
         padding: 30,
         width: '90%',
         marginTop: 40,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5.46,
-        elevation: 9,
     },
     loginTitle: {
         fontSize: 24,
@@ -162,30 +215,25 @@ const styles = StyleSheet.create({
         borderBottomColor: '#28578e',
         paddingBottom: 5,
     },
- 
     inputGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
     },
-   
     inputColumn: {
         width: '48%',
         marginBottom: 10,
     },
-   
     inputColumnFull: {
         width: '100%',
         marginBottom: 10,
     },
-   
     label: {
         fontSize: 16,
         color: '#fff',
         fontWeight: 'bold',
-        marginTop: 5,
+        marginBottom: 4,
     },
- 
     input: {
         backgroundColor: '#f0f4f8',
         borderRadius: 8,
@@ -195,6 +243,21 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#28578e',
     },
+    inputNoBorder: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        paddingVertical: 10,
+    },
+    passwordContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#f0f4f8",
+        borderWidth: 1,
+        borderColor: "#28578e",
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginTop: 4,
+    },
     button: {
         backgroundColor: '#28578e',
         borderRadius: 10,
@@ -203,29 +266,11 @@ const styles = StyleSheet.create({
         marginTop: 25,
         width: '80%',
         alignSelf: 'center',
-        shadowColor: "#000",
-        shadowRadius: 3.84,
-        elevation: 5,
     },
-   
     buttonText: {
         color: '#fff',
         fontWeight: '900',
         fontSize: 20,
     },
- 
-    linkContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 25,
-        paddingHorizontal: 5,
-    },
- 
-    link: {
-        color: '#e0e8ff',
-        textDecorationLine: 'underline',
-        fontSize: 13,
-        fontWeight: '600',
-    },
 });
- 
+

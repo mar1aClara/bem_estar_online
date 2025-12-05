@@ -7,6 +7,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TaskProvider } from "@/components/Context/TaskProvider";
 import { TaskProviderPS } from "@/components/ContextPS/TaskProviderPS";
+import { TaskReceita } from "@/components/ContextReceita/TaskReceita";
 
 
 export default function Layout() {
@@ -15,10 +16,12 @@ export default function Layout() {
             <TaskProviderPS>
                 <ProfileProvider>
                     <UnidadeProvider>
-                    <SafeAreaView style={styles.container}>
-                        <Cabecalho />
-                        <Slot />
-                    </SafeAreaView>
+                        <TaskReceita>
+                            <SafeAreaView style={styles.container}>
+                                <Cabecalho />
+                                <Slot />
+                            </SafeAreaView>
+                        </TaskReceita>
                     </UnidadeProvider>
                 </ProfileProvider>
             </TaskProviderPS>
