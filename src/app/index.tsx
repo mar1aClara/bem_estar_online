@@ -10,11 +10,24 @@ const checkStorage = async () => {
   try {
     const keys = await AsyncStorage.getAllKeys();
     const items = await AsyncStorage.multiGet(keys);
-    console.log("📦 Conteúdo do AsyncStorage:", items);
+
+    console.log("📦 Conteúdo do AsyncStorage:");
+
+    items.forEach(([key, value]) => {
+      console.log(`🔑 Chave: ${key}`);
+      try {
+        const parsed = JSON.parse(value || "");
+        console.log("📌 Valor formatado:", parsed);
+      } catch {
+        console.log("📌 Valor (texto):", value);
+      }
+      console.log("------------------------------------");
+    });
   } catch (e) {
     console.log("Erro ao acessar AsyncStorage", e);
   }
 };
+
 
   return (
     <View style={styles.container}>
