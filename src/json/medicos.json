@@ -14,15 +14,188 @@
       "cep": "01012-000"
     },
     "horarios_disponiveis": [
-      "08:00",
-      "08:30",
-      "09:00",
-      "09:30",
-      "10:00",
-      "14:00",
-      "14:30",
-      "15:00",
-      "15:30"
+      "08:00", "08:30", "09:00", "09:30", "10:00",
+      "14:00", "14:30", "15:00", "15:30"
+    ]
+  },
+
+  "458203": {
+    "nome": "Dra. Helena Moura",
+    "especialidade": "Pediatra",
+    "crm": "458203",
+    "telefone": "(21) 99742-1183",
+    "email": "helena.moura@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Avenida Atlântica",
+      "numero": "921",
+      "bairro": "Copacabana",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "cep": "22030-000"
+    },
+    "horarios_disponiveis": [
+      "07:30", "08:00", "08:30", "09:00",
+      "13:00", "13:30", "14:00"
+    ]
+  },
+
+  "591774": {
+    "nome": "Dr. Marcelo Oliveira",
+    "especialidade": "Cardiologista",
+    "crm": "591774",
+    "telefone": "(31) 98455-6672",
+    "email": "marcelo.oliveira@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua Carijós",
+      "numero": "455",
+      "bairro": "Centro",
+      "cidade": "Belo Horizonte",
+      "estado": "MG",
+      "cep": "30120-060"
+    },
+    "horarios_disponiveis": [
+      "09:00", "09:30", "10:00",
+      "15:00", "15:30", "16:00"
+    ]
+  },
+
+  "622350": {
+    "nome": "Dra. Beatriz Nascimento",
+    "especialidade": "Ginecologista",
+    "crm": "622350",
+    "telefone": "(41) 99120-4451",
+    "email": "beatriz.nascimento@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua das Flores",
+      "numero": "89",
+      "bairro": "Centro",
+      "cidade": "Curitiba",
+      "estado": "PR",
+      "cep": "80020-090"
+    },
+    "horarios_disponiveis": [
+      "08:00", "08:30", "09:00", "10:30",
+      "14:30", "15:00"
+    ]
+  },
+
+  "734811": {
+    "nome": "Dr. Felipe Ramos",
+    "especialidade": "Ortopedista",
+    "crm": "734811",
+    "telefone": "(51) 99614-7321",
+    "email": "felipe.ramos@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua Padre Chagas",
+      "numero": "102",
+      "bairro": "Moinhos de Vento",
+      "cidade": "Porto Alegre",
+      "estado": "RS",
+      "cep": "90570-080"
+    },
+    "horarios_disponiveis": [
+      "08:00", "08:30", "09:30",
+      "14:00", "14:30", "16:00"
+    ]
+  },
+
+  "812943": {
+    "nome": "Dra. Camila Prado",
+    "especialidade": "Dermatologista",
+    "crm": "812943",
+    "telefone": "(71) 98133-9172",
+    "email": "camila.prado@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua do Carmo",
+      "numero": "77",
+      "bairro": "Pelourinho",
+      "cidade": "Salvador",
+      "estado": "BA",
+      "cep": "40026-000"
+    },
+    "horarios_disponiveis": [
+      "09:00", "09:30", "10:00",
+      "14:00", "15:00"
+    ]
+  },
+
+  "905122": {
+    "nome": "Dr. Renato Silva",
+    "especialidade": "Neurologista",
+    "crm": "905122",
+    "telefone": "(85) 98722-5561",
+    "email": "renato.silva@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua Senador Pompeu",
+      "numero": "212",
+      "bairro": "Centro",
+      "cidade": "Fortaleza",
+      "estado": "CE",
+      "cep": "60025-000"
+    },
+    "horarios_disponiveis": [
+      "08:30", "09:00", "09:30",
+      "13:30", "14:00"
+    ]
+  },
+
+  "100234": {
+    "nome": "Dra. Larissa Tavares",
+    "especialidade": "Oftalmologista",
+    "crm": "100234",
+    "telefone": "(95) 98411-6621",
+    "email": "larissa.tavares@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua Bento Brasil",
+      "numero": "14",
+      "bairro": "Centro",
+      "cidade": "Boa Vista",
+      "estado": "RR",
+      "cep": "69301-000"
+    },
+    "horarios_disponiveis": [
+      "07:00", "07:30", "08:00",
+      "10:00", "10:30"
+    ]
+  },
+
+  "718490": {
+    "nome": "Dr. Paulo Almeida",
+    "especialidade": "Endocrinologista",
+    "crm": "718490",
+    "telefone": "(62) 98571-9123",
+    "email": "paulo.almeida@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua 4",
+      "numero": "555",
+      "bairro": "Setor Oeste",
+      "cidade": "Goiânia",
+      "estado": "GO",
+      "cep": "74110-040"
+    },
+    "horarios_disponiveis": [
+      "08:00", "08:30", "09:00",
+      "15:00", "15:30"
+    ]
+  },
+
+  "882144": {
+    "nome": "Dra. Juliana Campos",
+    "especialidade": "Psiquiatra",
+    "crm": "882144",
+    "telefone": "(98) 98844-7251",
+    "email": "juliana.campos@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua Grande",
+      "numero": "320",
+      "bairro": "Centro",
+      "cidade": "São Luís",
+      "estado": "MA",
+      "cep": "65020-001"
+    },
+    "horarios_disponiveis": [
+      "08:00", "08:30", "09:00",
+      "14:00", "14:30", "15:00"
     ]
   }
 }
