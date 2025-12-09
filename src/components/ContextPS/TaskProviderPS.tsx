@@ -23,7 +23,7 @@ type UnidadeContextType = {
   ) => void;
 
   updateProfile: (id: number, data: Partial<Unidade>) => void;
-
+  deleteUnidade: (id: number) => void; 
   currentUserId: number | null;
   setCurrentUserId: (id: number) => void;
 };
@@ -49,7 +49,7 @@ export function TaskProviderPS({ children }: { children: ReactNode }) {
     };
     getData();
   }, []);
-
+  
   // 🔹 Salvar automaticamente quando mudar
   useEffect(() => {
     const storeData = async (list: Unidade[]) => {
@@ -92,6 +92,22 @@ export function TaskProviderPS({ children }: { children: ReactNode }) {
       oldList.map((u) => (u.id === id ? { ...u, ...data } : u))
     );
   };
+  
+
+  const deleteUnidade = async (id: number) => {
+  try {
+    // Remove a unidade com o ID informado
+    const novasUnidades = unidades.filter((u) => u.id !== id);
+    // Atualiza o estado e o AsyncStorage (automaticamente pelo useEffect)
+    setUnidades(novasUnidades);
+    // Se quem foi deletado era o logado → deslogar
+    if (currentUserId === id) {
+      setCurrentUserId(null);
+    }
+  } catch (error) {
+    console.log("Erro ao excluir unidade:", error);
+  }
+};
 
   return (
     <UnidadeContext.Provider
@@ -99,6 +115,7 @@ export function TaskProviderPS({ children }: { children: ReactNode }) {
         unidades, 
         addUnidade, 
         updateProfile, 
+        deleteUnidade,
         currentUserId,
         setCurrentUserId }}
     >

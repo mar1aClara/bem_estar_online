@@ -5,7 +5,7 @@ import Rodape from "@/components/Rodape";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ArtigoType = {
     id: number;
@@ -16,12 +16,47 @@ type ArtigoType = {
 };
 
 export default function PaginaInicial() {
-    const { pacientes, currentUserId } = useTaskContext();
+    const { pacientes, currentUserId, deletePaciente } = useTaskContext();
     const profile = pacientes.find((p) => p.id === currentUserId);
     console.log("PaginaInicial - profile:", profile);
 
     const artigos: ArtigoType[] = require("@/json/artigos.json");
     const [artigoSelecionado, setArtigoSelecionado] = useState<ArtigoType | null>(null);
+
+    const confirmarExclusao = () => {
+        Alert.alert(
+            "Excluir conta",
+            "Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita!",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Excluir",
+                    style: "destructive",
+                    onPress: (excluir)
+                }
+            ]
+        );
+    };
+
+    const excluir = () => {
+        if (!currentUserId) return;
+        deletePaciente(currentUserId);
+        router.navigate("/telaLogin/telaLogin"); // ou a rota que você quiser
+    };
+
+     const confirmarSaida = () => {
+        Alert.alert(
+          "Sair da conta",
+          "Tem certeza que deseja sair?",
+          [
+            { text: "Cancelar", style: "cancel" },
+            { text: "Sair", style: "destructive", onPress: (sairDoApp) }
+          ]
+        );
+      };
+      const sairDoApp = () => {
+        router.replace('/telaLogin/telaLogin');
+      }
 
     return (
         <View style={styles.container}>
@@ -37,8 +72,11 @@ export default function PaginaInicial() {
                             <View style={styles.header}>
                                 <Text style={styles.headerTitle}>Minha página</Text>
                                 <View style={styles.headerRight}>
-                                    <MaterialCommunityIcons name="pill" size={22} color="#fff" />
                                     <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                                    <TouchableOpacity onPress={confirmarSaida} >
+                                        <MaterialCommunityIcons name="exit-to-app" size={22} color="#fff" />
+                                    </TouchableOpacity>
+
                                 </View>
                             </View>
 
@@ -58,10 +96,10 @@ export default function PaginaInicial() {
                                 >
                                     <Text style={styles.editText}>Editar</Text>
                                 </TouchableOpacity>
-                                { profile && profile.nome ? (
-                                      <Text 
+                                {profile && profile.nome ? (
+                                    <Text
                                         style={styles.profileName}
-                                      >
+                                    >
                                         {profile.nome}</Text>) : null}
                             </View>
 
@@ -89,9 +127,18 @@ export default function PaginaInicial() {
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10 }} onPress={() => router.navigate('/artigos')}>
                             <Text style={styles.verMais}>Ver todos os artigos</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonExit} onPress={() => router.replace('/telaLogin/telaLogin')} >
-                            <Text style={styles.textButtonExit}>Sair </Text>
+
+
+
+                        <TouchableOpacity
+                            style={styles.buttonDelete}
+                            onPress={confirmarExclusao}
+                        >
+                            <Text style={styles.textButtonDelete}>
+                                Excluir Conta
+                            </Text>
                         </TouchableOpacity>
+
                         <Rodape />
                     </>
                 }
@@ -117,16 +164,15 @@ const styles = StyleSheet.create({
         paddingTop: 60,
         alignItems: "center",
     },
-    buttonExit: {
-        marginTop: 10,
-        backgroundColor: "#ea4343ff",
-        paddingVertical: 10,
-        paddingHorizontal: 40,
+    buttonDelete: {
+        backgroundColor: "#ff4d4d",
+        padding: 12,
         borderRadius: 8,
-        alignSelf: "center",
+        alignItems: "center",
+        marginTop: 20
     },
 
-    textButtonExit: {
+    textButtonDelete: {
         color: "#fff",
         fontWeight: "bold",
         fontSize: 16,

@@ -5,7 +5,7 @@ import Rodape from "@/components/Rodape";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ArtigoType = {
   id: number;
@@ -16,20 +16,57 @@ type ArtigoType = {
 };
 
 export default function PerfilPS() {
-  const { unidades, currentUserId } = useTaskContextPS();
+  const { unidades, currentUserId, deleteUnidade } = useTaskContextPS();
+
   const profile = unidades.find(p => p.id === currentUserId);
   console.log("PerfilPS - profile:", profile);
 
   const artigos: ArtigoType[] = require("@/json/artigos.json");
   const [artigoSelecionado, setArtigoSelecionado] = useState<ArtigoType | null>(null);
 
-//   if (!profile) {
-//   return (
-//     <View style={{ flex: 1, backgroundColor:"#0c0346", justifyContent:"center", alignItems:"center" }}>
-//       <Text style={{ color:"#fff" }}>Carregando perfil...</Text>
-//     </View>
-//   );
-// }
+  const confirmarExclusao = () => {
+    Alert.alert(
+      "Excluir conta",
+      "Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita!",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: (excluir)
+        }
+      ]
+    );
+  };
+
+  const excluir = () => {
+    if (!currentUserId) return;
+    deleteUnidade(currentUserId);
+    router.navigate("/telaLogin/telaLogin"); // ou a rota que você quiser
+  };
+
+  const confirmarSaida = () => {
+    Alert.alert(
+      "Sair da conta",
+      "Tem certeza que deseja sair?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Sair", style: "destructive", onPress: (sairDoApp) }
+      ]
+    );
+  };
+  const sairDoApp = () => {
+    router.replace('/telaLogin/telaLogin');
+  }
+
+
+  //   if (!profile) {
+  //   return (
+  //     <View style={{ flex: 1, backgroundColor:"#0c0346", justifyContent:"center", alignItems:"center" }}>
+  //       <Text style={{ color:"#fff" }}>Carregando perfil...</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
@@ -43,6 +80,14 @@ export default function PerfilPS() {
             <View style={{ width: "100%", alignItems: "center" }}>
               <View style={styles.header}>
                 <Text style={styles.headerTitle}>Minha página</Text>
+
+                <View style={styles.headerRight}>
+
+                  <TouchableOpacity onPress={confirmarSaida} >
+                    <MaterialCommunityIcons name="exit-to-app" size={22} color="#fff" />
+                  </TouchableOpacity>
+
+                </View>
               </View>
 
               <View style={styles.profileCard}>
@@ -75,6 +120,17 @@ export default function PerfilPS() {
             <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10 }} onPress={() => router.navigate('/artigos')}>
               <Text style={styles.verMais}>Ver todos os artigos</Text>
             </TouchableOpacity>
+
+
+            <TouchableOpacity
+              style={styles.buttonDelete}
+              onPress={confirmarExclusao}
+            >
+              <Text style={styles.textButtonDelete}>
+                Excluir Conta
+              </Text>
+            </TouchableOpacity>
+
             <Rodape />
           </>
         }
@@ -99,6 +155,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#0c0346",
     paddingTop: 60,
     alignItems: "center",
+  },
+  buttonDelete: {
+    backgroundColor: "#ff4d4d",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20
+  },
+
+  textButtonDelete: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   header: {
     width: "90%",
@@ -161,5 +230,10 @@ const styles = StyleSheet.create({
     color: "#cfe8ff",
     fontWeight: "600",
     marginBottom: 30,
+  },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
 });
