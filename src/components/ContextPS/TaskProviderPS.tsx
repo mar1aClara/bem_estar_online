@@ -1,90 +1,125 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState, ReactNode } from "react";
 
-export type Unidade = {
-    id: number;
-    nome: string;
-    senha: string;
-    telefone: string;
-    cidade: string;
-    cnpj: string;
+type Unidade = {
+  id: number;
+  nome: string;
+  senha: string;
+  telefone: string;
+  cidade: string;
+  cnpj: string;
+  foto: string | null;
 };
 
-
 type UnidadeContextType = {
-    unidades: Unidade[];
-    addUnidade: (
-        nome: string,
-        senha: string,
-        telefone: string,
-        cidade: string,
-        cnpj: string
-    ) => void;
+  unidades: Unidade[];
+  addUnidade: (
+    nome: string,
+    senha: string,
+    telefone: string,
+    cidade: string,
+    cnpj: string,
+    foto?: string | null
+  ) => void;
+
+  updateProfile: (id: number, data: Partial<Unidade>) => void;
+  deleteUnidade: (id: number) => void; 
+  currentUserId: number | null;
+  setCurrentUserId: (id: number) => void;
 };
 
 export const UnidadeContext = createContext<UnidadeContextType | undefined>(undefined);
 
 export function TaskProviderPS({ children }: { children: ReactNode }) {
+  const STORAGE_KEY = "BemEstarOnline:Unidades";
 
-    const STORAGE_KEY = "BemEstarOnline:Unidades";
+  const [unidades, setUnidades] = useState<Unidade[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
-    const [unidades, setUnidades] = useState<Unidade[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    // Carregar dados do AsyncStorage
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                const json = await AsyncStorage.getItem(STORAGE_KEY);
-                const data = json ? (JSON.parse(json) as Unidade[]) : [];
-                setUnidades(data);
-                setIsLoaded(true);
-            } catch (e) {
-                console.log("Erro ao carregar unidades", e);
-            }
-        };
-
-        loadData();
-    }, []);
-
-    // Salvar no AsyncStorage quando mudar
-    useEffect(() => {
-        const saveData = async () => {
-            try {
-                await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(unidades));
-            } catch (e) {
-                console.log("Erro ao salvar unidades", e);
-            }
-        };
-
-        if (isLoaded) saveData();
-    }, [unidades, isLoaded]);
-
-
-    // Criar Unidade
-    const addUnidade = (
-        nome: string,
-        senha: string,
-        telefone: string,
-        cidade: string,
-        cnpj: string
-    ) => {
-        setUnidades((prev) => [
-            ...prev,
-            {
-                id: prev.length + 1,
-                nome,
-                senha,
-                telefone,
-                cidade,
-                cnpj,
-            },
-        ]);
+  // 🔹 Carregar os dados
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const json = await AsyncStorage.getItem(STORAGE_KEY);
+        const loadedData = json  != null ? (JSON.parse(json) as Unidade[]) : [];
+        setUnidades(loadedData);
+        setIsLoaded(true);
+      } catch (e) {}
     };
+    getData();
+  }, []);
+  
+  // 🔹 Salvar automaticamente quando mudar
+  useEffect(() => {
+    const storeData = async (list: Unidade[]) => {
+      try {
+        const jsonValue = JSON.stringify(list);
+        await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
+      } catch (e) {}
+    };
+    if (isLoaded) {
+      storeData(unidades);
+    }
+  }, [unidades, isLoaded]);
 
-    return (
-        <UnidadeContext.Provider value={{ unidades, addUnidade }}>
-            {children}
-        </UnidadeContext.Provider>
+  const addUnidade = (
+    nome: string,
+    senha: string,
+    telefone: string,
+    cidade: string,
+    cnpj: string,
+    foto?: string | null
+  ) => {
+    setUnidades((oldState) => {
+      const newUser = {
+        id: oldState.length + 1,
+        nome,
+        senha,
+        telefone,
+        cidade,
+        cnpj,
+        foto: null,
+      };
+
+      setCurrentUserId(newUser.id);
+      return [...oldState, newUser];
+    });
+  };
+
+  const updateProfile = (id: number, data: Partial<Unidade>) => {
+    setUnidades((oldList) =>
+      oldList.map((u) => (u.id === id ? { ...u, ...data } : u))
     );
+  };
+  
+
+  const deleteUnidade = async (id: number) => {
+  try {
+    // Remove a unidade com o ID informado
+    const novasUnidades = unidades.filter((u) => u.id !== id);
+    // Atualiza o estado e o AsyncStorage (automaticamente pelo useEffect)
+    setUnidades(novasUnidades);
+    // Se quem foi deletado era o logado → deslogar
+    if (currentUserId === id) {
+      setCurrentUserId(null);
+    }
+  } catch (error) {
+    console.log("Erro ao excluir unidade:", error);
+  }
+};
+
+  return (
+    <UnidadeContext.Provider
+      value={{ 
+        unidades, 
+        addUnidade, 
+        updateProfile, 
+        deleteUnidade,
+        currentUserId,
+        setCurrentUserId }}
+    >
+      {children}
+    </UnidadeContext.Provider>
+  );
 }

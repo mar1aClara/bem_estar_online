@@ -13,8 +13,8 @@ export default function LoginScreen() {
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-  const { pacientes } = useTaskContext();
-  const { unidades } = useTaskContextPS();
+  const { pacientes, setCurrentUserId } = useTaskContext();
+  const { unidades} = useTaskContextPS();
 
   function formatarDocumento(text: string) {
     const num = text.replace(/\D/g, '');
@@ -56,8 +56,12 @@ export default function LoginScreen() {
 
       try {
         await AsyncStorage.setItem('@MyApp:LoggedPatient', JSON.stringify(pacienteEncontrado));
-      } catch (e) {}
+      } catch (e) { }
 
+      // Salva o que está logado
+      setCurrentUserId(pacienteEncontrado.id);
+
+      // Login OK → Paciente
       router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
       return;
     }
@@ -77,8 +81,11 @@ export default function LoginScreen() {
 
       try {
         await AsyncStorage.setItem('@MyApp:LoggedUnit', JSON.stringify(unidadeEncontrada));
-      } catch (e) {}
+      } catch (e) { }
 
+      setCurrentUserId(unidadeEncontrada.id);
+
+      // Login OK → Unidade
       router.navigate('/(drawer)/(tabsPS)/paginaInicialPostoSaude');
       return;
     }
@@ -116,7 +123,7 @@ export default function LoginScreen() {
             onPress={() => setMostrarSenha(!mostrarSenha)}
             style={styles.eyeButton}
           >
-           <Ionicons name={mostrarSenha ? "eye-off" : "eye"} size={22} color="#333" />
+            <Ionicons name={mostrarSenha ? "eye-off" : "eye"} size={22} color="#333" />
           </TouchableOpacity>
         </View>
 

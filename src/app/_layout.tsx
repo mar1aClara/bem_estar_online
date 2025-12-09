@@ -1,6 +1,4 @@
 import Cabecalho from "@/components/Cabecalho";
-import { ProfileProvider } from "@/components/Context/ProfileContext";
-import { UnidadeProvider } from "@/components/ContextPS/UnidadeContext";
 import { Slot } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -14,16 +12,10 @@ export default function Layout() {
     return (
         <TaskProvider>
             <TaskProviderPS>
-                <ProfileProvider>
-                    <UnidadeProvider>
-                        <TaskReceita>
-                            <SafeAreaView style={styles.container}>
-                                <Cabecalho />
-                                <Slot />
-                            </SafeAreaView>
-                        </TaskReceita>
-                    </UnidadeProvider>
-                </ProfileProvider>
+                    <SafeAreaView style={styles.container}>
+                        <Cabecalho />
+                        <Slot />
+                    </SafeAreaView>
             </TaskProviderPS>
         </TaskProvider>
 

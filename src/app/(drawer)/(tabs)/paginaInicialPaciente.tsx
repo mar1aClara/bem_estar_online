@@ -12,7 +12,6 @@ export default function PaginaInicial() {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Bem vindo(a) de volta...</Text>
-                <MaterialCommunityIcons name="pill" size={22} color="#fff" />
             </View>
 
             <Pressable style={styles.cardPressable} onPress={() => router.navigate('/(drawer)/(tabs)/calendario')}>

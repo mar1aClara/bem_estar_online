@@ -8,6 +8,7 @@ type Paciente = {
   cidade: string;
   telefone: string;
   senha: string;
+  foto: string | null;
   id: number;
 };
 
@@ -19,10 +20,16 @@ type TaskContextType = {
     cep: string,
     cidade: string,
     telefone: string,
-    senha: string
+    senha: string,
+    foto?: string | null,
   ) => void;
-};
+  
+  updateProfile: (id: number, data: Partial<Paciente>) => void;
+  deletePaciente: (id: number) => void;
 
+  currentUserId: number | null;
+  setCurrentUserId: (id: number) => void;
+};
 
 export const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
@@ -31,7 +38,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
 
   useEffect(() => {
@@ -71,26 +78,53 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     senha: string
   ) => {
     setPacientes((oldState) => {
-      return [
-        ...oldState,
-        {
+      const newPaciente = {
           nome,
           email,
           cep,
           cidade,
           telefone,
           senha,
+          foto: null,
           id: oldState.length + 1,
-        },
-      ];
+        };
+
+      setCurrentUserId(newPaciente.id);
+      
+      return [...oldState, newPaciente];
     });
   };
+
+  const updateProfile = (id: number, data: Partial<Paciente>) => {
+  setPacientes((oldList) =>
+    oldList.map((p) => (p.id === id ? { ...p, ...data } : p))
+  );
+};
+
+  const deletePaciente = async (id: number) => {
+  try {
+    // Remove a unidade com o ID informado
+    const novosPacientes = pacientes.filter((u) => u.id !== id);
+    // Atualiza o estado e o AsyncStorage (automaticamente pelo useEffect)
+    setPacientes(novosPacientes);
+    // Se quem foi deletado era o logado → deslogar
+    if (currentUserId === id) {
+      setCurrentUserId(null);
+    }
+  } catch (error) {
+    console.log("Erro ao excluir paciente:", error);
+  }
+};
 
   return (
     <TaskContext.Provider
       value={{
         pacientes,
         addPaciente,
+        updateProfile,
+        deletePaciente,
+        currentUserId,
+        setCurrentUserId,
       }}
     >
       {children}

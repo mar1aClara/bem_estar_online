@@ -15,6 +15,7 @@ export default function TelaLogin() {
     const [telefone, setTelefone] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    const [foto, setFoto] = useState<string |null>(null);
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
 
@@ -46,6 +47,7 @@ export default function TelaLogin() {
             alert('Por favor, preencha todos os campos.');
             return;
         }
+        addPaciente(nome, email, cpf, cidade, telefone, senha, foto);
 
         const emailValido = email.endsWith("@gmail.com") || email.endsWith("@hotmail.com");
         if (!emailValido) {
@@ -73,6 +75,7 @@ export default function TelaLogin() {
         setTelefone('');
         setSenha('');
         setConfirmarSenha('');
+        setFoto(null);
 
         router.navigate('/telaLogin/telaLogin');
     };
