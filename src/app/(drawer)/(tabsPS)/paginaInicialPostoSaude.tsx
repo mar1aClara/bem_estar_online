@@ -18,7 +18,6 @@ export default function PaginaInicialPosto() {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Bem vindo(a) de volta...</Text>
-                <MaterialCommunityIcons name="pill" size={22} color="#fff" />
             </View>
 
             <Pressable

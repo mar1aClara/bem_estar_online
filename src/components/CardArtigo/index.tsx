@@ -1,19 +1,23 @@
 import React from "react";
-import {Text, Image, StyleSheet, View } from "react-native";
+import {Text, Image, StyleSheet, View, StyleProp, ViewStyle } from "react-native";
 
-export default function CardArtigo({
-  titulo,
-  imagem,
-  largura = 190, 
-  altura = 160  
-}: {
+type CardArtigoProps = {
   titulo: string;
   imagem: string;
   largura?: number | string;
   altura?: number | string;
-}) {
+  style?: StyleProp<ViewStyle>;
+};
+
+export default function CardArtigo({
+  titulo,
+  imagem,
+  largura = 190,
+  altura = 160,
+  style,
+}: CardArtigoProps) {
   return (
-    <View style={[styles.card, {width: largura, height: altura }]}>
+    <View style={[styles.card, { width: largura, height: altura }, style]}>
       <Image source={{ uri: imagem }} style={styles.image} />
 
       <View style={styles.footer}>

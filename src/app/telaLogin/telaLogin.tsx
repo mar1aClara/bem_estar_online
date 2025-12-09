@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { TaskProvider } from '@/components/Context/TaskProvider';
 import useTaskContext from '@/components/Context/useTaskContext';
-import { TaskProviderPS } from '@/components/ContextPS/TaskProviderPS';
 import useTaskContextPS from '@/components/ContextPS/useTaskContextPS';
  
 export default function LoginScreen() {
   const router = useRouter();
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
-  const { pacientes } = useTaskContext(TaskProvider);
-  const { unidades } = useTaskContextPS(TaskProviderPS);
+  const { pacientes, setCurrentUserId } = useTaskContext();
+  const { unidades } = useTaskContextPS();
 
 
 
@@ -39,6 +37,9 @@ export default function LoginScreen() {
       return;
     }
 
+    // Salva o que está logado
+    setCurrentUserId(pacienteEncontrado.id);
+
     // Login OK → Paciente
     router.navigate('/(drawer)/(tabs)/paginaInicialPaciente');
     return;
@@ -59,6 +60,8 @@ export default function LoginScreen() {
       return;
     }
 
+    setCurrentUserId(unidadeEncontrada.id);
+    
     // Login OK → Unidade
     router.navigate('/(drawer)/(tabsPS)/paginaInicialPostoSaude');
     return;

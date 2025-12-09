@@ -5,7 +5,8 @@ import React from "react";
 
 export default function LayoutTabs() {
     return (
-        <Tabs screenOptions={{
+        <Tabs
+        screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: '#fff',
             tabBarInactiveTintColor: '#888',
@@ -14,7 +15,8 @@ export default function LayoutTabs() {
                 borderTopColor: 'transparent',
                 shadowColor: 'transparent',
             }
-        }}>
+        }}
+        >
 
             <Tabs.Screen 
                 name="paginaInicialPostoSaude" 
@@ -27,7 +29,7 @@ export default function LayoutTabs() {
             />
 
             <Tabs.Screen
-                name="chatPS"
+                name="(chatPS)"
                 options={{
                     tabBarItemStyle: { display: 'none' },
                 }}
@@ -54,12 +56,12 @@ export default function LayoutTabs() {
             />
 
             <Tabs.Screen
-                name = "carteiraUnidadeSaude"
+                name="carteiraUnidadeSaude"
                 options={{
-                    tabBarIcon: ({color}) => (
-                        <MaterialCommunityIcons name="badge-account-horizontal" size={24} color={color}/>
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="badge-account-horizontal" size={24} color={color} />
                     ),
-                    tabBarLabel:"Carteira"
+                    tabBarLabel: "Carteira"
                 }}
             />
 

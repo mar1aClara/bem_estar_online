@@ -11,6 +11,7 @@ import MapView, { Marker, Region } from 'react-native-maps';
 
 // 🚨 CERTIFIQUE-SE DE QUE ESTE CAMINHO ESTÁ CORRETO
 import ubsData from '@/json/ubsPederneiras.json'; 
+import Header from '@/components/Header';
 
 // Tipagem para a Referência do MapView
 type MapViewRef = MapView | null;
@@ -90,6 +91,7 @@ const MapScreen: React.FC = () => {
 
     return (
         <View style={styles.container}>
+            <Header texto="Localização de UBS" />
             
             {/* Container de Pesquisa */}
             <View style={styles.searchContainer}>
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         position: 'absolute',
-        top: 50,
+        top: 60,
         left: 10,
         right: 10,
         backgroundColor: 'white',

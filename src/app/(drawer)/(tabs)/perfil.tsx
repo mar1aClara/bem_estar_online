@@ -1,5 +1,5 @@
 import CardArtigo from "@/components/CardArtigo";
-import { useProfile } from "@/components/Context/ProfileContext";
+import useTaskContext from "@/components/Context/useTaskContext";
 import ModalCard from "@/components/ModalCard";
 import Rodape from "@/components/Rodape";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,12 +16,16 @@ type ArtigoType = {
 };
 
 export default function PaginaInicial() {
-    const { profile } = useProfile();
+    const { pacientes, currentUserId } = useTaskContext();
+    const profile = pacientes.find((p) => p.id === currentUserId);
+    console.log("PaginaInicial - profile:", profile);
+
     const artigos: ArtigoType[] = require("@/json/artigos.json");
     const [artigoSelecionado, setArtigoSelecionado] = useState<ArtigoType | null>(null);
 
     return (
         <View style={styles.container}>
+
             <FlatList
                 data={artigos.slice(0, 4)}
                 keyExtractor={(item) => item.id.toString()}
@@ -29,36 +33,41 @@ export default function PaginaInicial() {
                 columnWrapperStyle={styles.flatListRow}
                 ListHeaderComponent={
                     <>
-                    <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Minha página</Text>
-                            <View style={styles.headerRight}>
-                                <MaterialCommunityIcons name="pill" size={22} color="#fff" />
-                                <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                        <View style={{ width: "100%", alignItems: "center" }}>
+                            <View style={styles.header}>
+                                <Text style={styles.headerTitle}>Minha página</Text>
+                                <View style={styles.headerRight}>
+                                    <MaterialCommunityIcons name="pill" size={22} color="#fff" />
+                                    <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                                </View>
                             </View>
-                        </View>
 
-                        <View style={styles.profileCard}>
-                            {profile.foto ? (
-                                <Image
-                                    source={{ uri: profile.foto }}
-                                    style={{ width: 90, height: 90, borderRadius: 100 }}
-                                />
-                            ) : (
-                                <MaterialCommunityIcons name="account" size={55} color="#fff" />
-                            )}
-                            <TouchableOpacity
-                                style={styles.editButton}
-                                onPress={() => router.navigate("/editar/editarPaciente")}
-                            >
-                                <Text style={styles.editText}>Editar</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.profileName}>{profile.nome}</Text>
-                        </View>
+                            <View style={styles.profileCard}>
 
-                        <View style={styles.articleSection}>
-                            <Text style={styles.articleTitle}>Artigos para você</Text>
-                        </View>
+                                {profile && profile.foto ? (
+                                    <Image
+                                        source={{ uri: profile.foto }}
+                                        style={{ width: 90, height: 90, borderRadius: 100 }}
+                                    />
+                                ) : (
+                                    <MaterialCommunityIcons name="account" size={55} color="#fff" />
+                                )}
+                                <TouchableOpacity
+                                    style={styles.editButton}
+                                    onPress={() => router.navigate("/editar/editarPaciente")}
+                                >
+                                    <Text style={styles.editText}>Editar</Text>
+                                </TouchableOpacity>
+                                { profile && profile.nome ? (
+                                      <Text 
+                                        style={styles.profileName}
+                                      >
+                                        {profile.nome}</Text>) : null}
+                            </View>
+
+                            <View style={styles.articleSection}>
+                                <Text style={styles.articleTitle}>Artigos para você</Text>
+                            </View>
                         </View>
                     </>
                 }
