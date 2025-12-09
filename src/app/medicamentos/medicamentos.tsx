@@ -62,7 +62,7 @@ export default function TelaVendas() {
     // Funções de Navegação
     const navegarParaDetalhes = (produto: any) => {
         router.navigate({
-            pathname: "/medicamentos/detalheMedicamento",
+            pathname: "/medicamentos/DetalheMedicamento",
             params: produto
         });
     };
