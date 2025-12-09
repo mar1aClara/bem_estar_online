@@ -1,8 +1,21 @@
 import { router } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Rodape from '@/components/Rodape';
 
 export default function Index() {
+
+const checkStorage = async () => {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const items = await AsyncStorage.multiGet(keys);
+    console.log("📦 Conteúdo do AsyncStorage:", items);
+  } catch (e) {
+    console.log("Erro ao acessar AsyncStorage", e);
+  }
+};
+
   return (
     <View style={styles.container}>
         <Image style={styles.logo} source={require('@/assets/logo_bem_estar.png')}/>
@@ -14,6 +27,10 @@ export default function Index() {
       >
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
+
+      <Pressable onPress={checkStorage} >
+        <Rodape />
+      </Pressable>
     </View>
   );
 }
