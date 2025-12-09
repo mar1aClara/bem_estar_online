@@ -1,10 +1,11 @@
+// AgendamentoCalendar.js
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert, Pressable } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@MyApp:BookedAppointments';
-const PATIENT_ID = "Patricia Esteves";
+const LOGGED_PATIENT_KEY = '@MyApp:LoggedPatient';
 
 type AppointmentDetail = {
     time: string;
@@ -19,11 +20,7 @@ type Appointments = {
     [date: string]: AppointmentDetail[];
 };
 
-const START_HOUR = 6;
-const END_HOUR = 17;
-const SLOT_DURATION_MINUTES = 15;
-
-// Função de limpeza de agendamentos expirados (mantida)
+// remove agendamentos expirados
 const filterExpiredAppointments = (appointments: Appointments): Appointments => {
     const now = new Date().getTime();
     const gracePeriodInMs = 60 * 60 * 1000;
@@ -46,45 +43,65 @@ export default function AgendamentoCalendar() {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [bookedAppointments, setBookedAppointments] = useState<Appointments>({});
     const [loading, setLoading] = useState(true);
+    const [loggedPatient, setLoggedPatient] = useState<any | null>(null);
+    const [refreshFlag, setRefreshFlag] = useState(0); // forçar re-render após alterações
 
-    // Carrega e filtra os agendamentos
+    // carrega agendamentos + paciente logado
     useEffect(() => {
-        const loadAppointments = async () => {
+        const loadAll = async () => {
             try {
-                const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
-                if (jsonValue !== null) {
-                    const loadedAppointments = JSON.parse(jsonValue);
-                    setBookedAppointments(filterExpiredAppointments(loadedAppointments));
+                const [jsonValue, loggedValue] = await Promise.all([
+                    AsyncStorage.getItem(STORAGE_KEY),
+                    AsyncStorage.getItem(LOGGED_PATIENT_KEY)
+                ]);
+
+                if (jsonValue) {
+                    const loaded = JSON.parse(jsonValue);
+                    setBookedAppointments(filterExpiredAppointments(loaded));
+                } else {
+                    setBookedAppointments({});
+                }
+
+                if (loggedValue) {
+                    try {
+                        setLoggedPatient(JSON.parse(loggedValue));
+                    } catch {
+                        setLoggedPatient(null);
+                    }
+                } else {
+                    setLoggedPatient(null);
                 }
             } catch (e) {
-                console.error("Failed to load appointments from storage", e);
+                console.error("Failed to load appointments or logged patient", e);
             } finally {
                 setLoading(false);
             }
         };
-        loadAppointments();
-    }, []);
 
-    // Filtra TODOS os agendamentos para mostrar APENAS os da paciente
+        loadAll();
+    }, [refreshFlag]);
+
+    // filtra consultas do paciente logado (cep == cpf)
+    const patientCPF = loggedPatient?.cep || null;
+
     const patientAppointmentsByDate = useMemo(() => {
         const patientApps: Appointments = {};
+        if (!patientCPF) return patientApps;
+
         for (const date in bookedAppointments) {
             const appsForDate = (bookedAppointments[date] || []).filter(
-                app => app.patientName === PATIENT_ID
+                app => (app.patientCPF || '') === (patientCPF || '')
             );
             if (appsForDate.length > 0) {
                 patientApps[date] = appsForDate.sort((a, b) => a.isoTime.localeCompare(b.isoTime));
             }
         }
         return patientApps;
-    }, [bookedAppointments]);
+    }, [bookedAppointments, patientCPF]);
 
-    // Agendamentos para o dia selecionado
-    const selectedDayAppointments = selectedDate
-        ? patientAppointmentsByDate[selectedDate] || []
-        : [];
+    const selectedDayAppointments = selectedDate ? (patientAppointmentsByDate[selectedDate] || []) : [];
 
-    // Mapeamento de datas para o calendário
+    // dados marcados para o calendário
     const markedDates: any = useMemo(() => {
         const marked: any = Object.keys(patientAppointmentsByDate).reduce((acc, date) => {
             acc[date] = { marked: true, dotColor: '#0c0346' };
@@ -101,11 +118,63 @@ export default function AgendamentoCalendar() {
         return marked;
     }, [patientAppointmentsByDate, selectedDate]);
 
+    // salvar novo objeto de agendamentos no storage e estado
+    const saveAppointments = async (newAppointments: Appointments) => {
+        try {
+            const filtered = filterExpiredAppointments(newAppointments);
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+            setBookedAppointments(filtered);
+        } catch (e) {
+            console.error('Erro ao salvar agendamentos', e);
+            Alert.alert('Erro', 'Falha ao salvar agendamentos.');
+        }
+    };
+
+    // cancelar uma consulta
+    const handleCancelAppointment = (appToDelete: AppointmentDetail) => {
+        Alert.alert(
+            'Confirmação',
+            `Deseja realmente cancelar a consulta de ${appToDelete.patientName} em ${appToDelete.date} às ${appToDelete.time}?`,
+            [
+                { text: 'Não', style: 'cancel' },
+                {
+                    text: 'Sim, cancelar',
+                    style: 'destructive',
+                    onPress: async () => {
+                        const date = appToDelete.date;
+                        const updatedDayAppointments = (bookedAppointments[date] || []).filter(
+                            app => app.isoTime !== appToDelete.isoTime
+                        );
+
+                        const newAppointments = { ...bookedAppointments, [date]: updatedDayAppointments };
+                        if (updatedDayAppointments.length === 0) delete newAppointments[date];
+
+                        await saveAppointments(newAppointments);
+                        // força reload (garante que useEffect recarrega também se necessário)
+                        setRefreshFlag(f => f + 1);
+                        Alert.alert('Cancelado', 'Consulta cancelada com sucesso.');
+                    }
+                }
+            ]
+        );
+    };
+
     if (loading) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
                 <ActivityIndicator size="large" color="#0078ff" />
                 <Text style={{ marginTop: 10 }}>Carregando agendamentos...</Text>
+            </View>
+        );
+    }
+
+    // se não há paciente logado, mostra instrução
+    if (!loggedPatient) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <Text style={{ textAlign: 'center', padding: 20 }}>
+                    Nenhum paciente autenticado. Faça login para ver seus agendamentos.
+                </Text>
             </View>
         );
     }
@@ -120,25 +189,10 @@ export default function AgendamentoCalendar() {
                         todayTextColor: '#0c0346',
                         arrowColor: '#0c0346',
                     }}
-                    onDayPress={(day) => {
-                        const today = new Date();
-                        const todayNormalized = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-
-                        if (new Date(day.dateString).getTime() < todayNormalized) {
-                            setSelectedDate(day.dateString);
-                        } else {
-                            setSelectedDate(day.dateString);
-                        }
-                    }}
+                    onDayPress={(day) => setSelectedDate(day.dateString)}
                 />
 
-                <View
-                    style={{
-                        height: 1,
-                        backgroundColor: '#ddd',
-                        marginHorizontal: 15
-                    }}
-                />
+                <View style={{ height: 1, backgroundColor: '#ddd', marginHorizontal: 15 }} />
 
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoTitle}>
@@ -157,6 +211,15 @@ export default function AgendamentoCalendar() {
                                             <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>CPF:</Text> {app.patientCPF}</Text>
                                             <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Consulta:</Text> {app.patientConsult}</Text>
                                             <Text style={styles.agendamentoText}><Text style={{ fontWeight: 'bold' }}>Tel:</Text> {app.patientPhone || 'N/A'}</Text>
+                                        </View>
+
+                                        <View style={styles.actionButtonContainer}>
+                                            <Pressable
+                                                style={[styles.cancelButton]}
+                                                onPress={() => handleCancelAppointment(app)}
+                                            >
+                                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Cancelar</Text>
+                                            </Pressable>
                                         </View>
                                     </View>
                                 ))
@@ -209,36 +272,13 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         fontWeight: 'bold',
     },
-    headerRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-        backgroundColor: "#fff",
-        marginBottom: 10,
+    actionButtonContainer: {
+        flexDirection: 'row',
     },
-
-    headerTitle: {
-        fontSize: 22,
-        fontWeight: "bold",
-        color: "#0c0346",
-        marginLeft: 20,
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        width: '90%',
-    },
-    iconButton: {
-        padding: 5,
-    },
+    cancelButton: {
+        backgroundColor: '#d9534f',
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 8,
+    }
 });

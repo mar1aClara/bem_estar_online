@@ -1,0 +1,28 @@
+{
+  "327491": {
+    "nome": "Dr. Gustavo Andrade",
+    "especialidade": "Clínico Geral",
+    "crm": "327491",
+    "telefone": "(11) 98241-7732",
+    "email": "gustavo.andrade@clinicaviva.com",
+    "endereco": {
+      "logradouro": "Rua das Palmeiras",
+      "numero": "312",
+      "bairro": "Centro",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "01012-000"
+    },
+    "horarios_disponiveis": [
+      "08:00",
+      "08:30",
+      "09:00",
+      "09:30",
+      "10:00",
+      "14:00",
+      "14:30",
+      "15:00",
+      "15:30"
+    ]
+  }
+}

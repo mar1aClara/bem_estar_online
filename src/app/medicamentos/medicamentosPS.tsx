@@ -76,13 +76,6 @@ export default function TelaVendas() {
                     <Text style={styles.categoriaTexto}>Criar Receita</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={[styles.categoriaButton, filtroAtivo === "Pedidos" && styles.categoriaAtiva]}
-                    onPress={() => router.navigate("/medicamentos/pedidosPacientes")}
-                >
-                    <Text style={styles.categoriaTexto}>Pedidos</Text>
-                </TouchableOpacity>
-
             </View>
 
             <ScrollView contentContainerStyle={styles.produtoContainer}>
@@ -144,7 +137,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: "bold",
         color: "#fff",
-        marginVertical: 10,
         textAlign: "center",
     },
 
@@ -171,10 +163,10 @@ const styles = StyleSheet.create({
 
     categoriaButton: {
         backgroundColor: "#28578e",
-        paddingVertical: 8,
-        paddingHorizontal: 10,
-        borderRadius: 40,
-        width: "30%",
+        paddingVertical: 11,
+        paddingHorizontal: 25,
+        borderRadius: 12,
+        width: "40%",
         alignItems: "center",
     },
 

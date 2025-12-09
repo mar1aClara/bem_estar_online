@@ -5,6 +5,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TaskProvider } from "@/components/Context/TaskProvider";
 import { TaskProviderPS } from "@/components/ContextPS/TaskProviderPS";
+import { TaskReceita } from "@/components/ContextReceita/TaskReceita";
 
 
 export default function Layout() {

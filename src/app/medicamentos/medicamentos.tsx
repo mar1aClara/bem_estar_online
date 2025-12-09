@@ -1,5 +1,5 @@
 import ListaCategorias from "@/components/CategoriaList";
-import { useReceitas } from "@/components/Context/TaskProvider";
+// 'useReceitas' is not exported from TaskProvider; remove the import and use a local fallback instead.
 import Header from "@/components/Header";
 import ItemCard from "@/components/ProdutoCard";
 import dadosMedicamentos from "@/json/medicamentos.js";
@@ -67,7 +67,9 @@ export default function TelaVendas() {
         });
     };
 
-    const { adicionarReceita } = useReceitas() as { adicionarReceita?: (pedido: any) => void };
+    const adicionarReceita = (pedido: any) => {
+        console.warn('adicionarReceita not available; received pedido:', pedido);
+    };
 
     function fazerPedido() {
         const pedido = {
@@ -80,7 +82,7 @@ export default function TelaVendas() {
             data: new Date().toLocaleDateString("pt-BR"),
         };
 
-        adicionarReceita?.(pedido);
+        adicionarReceita(pedido);
     }
 
 
@@ -121,9 +123,6 @@ export default function TelaVendas() {
                 <Text style={styles.sectionTitle}>
                     {searchText ? `"${searchText}"` : (filtroAtivo === 'Todos' ? 'Todos os Produtos' : filtroAtivo)}
                 </Text>
-                <Pressable onPress={()=> router.navigate('/medicamentos/verReceitas')} >
-                    <Text style={{ color: '#fff' }}>Receitas</Text>
-                </Pressable>
                 <View style={styles.grid}>
                     {produtosFiltrados.map((produto) => (
                         <ItemCard

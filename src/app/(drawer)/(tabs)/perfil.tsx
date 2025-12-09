@@ -89,6 +89,9 @@ export default function PaginaInicial() {
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10 }} onPress={() => router.navigate('/artigos')}>
                             <Text style={styles.verMais}>Ver todos os artigos</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonExit} onPress={() => router.replace('/telaLogin/telaLogin')} >
+                            <Text style={styles.textButtonExit}>Sair </Text>
+                        </TouchableOpacity>
                         <Rodape />
                     </>
                 }
@@ -113,6 +116,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0346",
         paddingTop: 60,
         alignItems: "center",
+    },
+    buttonExit: {
+        marginTop: 10,
+        backgroundColor: "#ea4343ff",
+        paddingVertical: 10,
+        paddingHorizontal: 40,
+        borderRadius: 8,
+        alignSelf: "center",
+    },
+
+    textButtonExit: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
     },
     header: {
         width: "90%",
