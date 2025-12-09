@@ -12,10 +12,12 @@ export default function Layout() {
     return (
         <TaskProvider>
             <TaskProviderPS>
+                <TaskReceita>
                     <SafeAreaView style={styles.container}>
                         <Cabecalho />
                         <Slot />
                     </SafeAreaView>
+                </TaskReceita>
             </TaskProviderPS>
         </TaskProvider>
 

@@ -72,7 +72,9 @@ export default function PaginaInicial() {
                             <View style={styles.header}>
                                 <Text style={styles.headerTitle}>Minha página</Text>
                                 <View style={styles.headerRight}>
+                                    <TouchableOpacity onPress={() => router.navigate('/medicamentos/verReceitas')}>
                                     <MaterialCommunityIcons name="pen" size={22} color="#fff" />
+                                    </TouchableOpacity>
                                     <TouchableOpacity onPress={confirmarSaida} >
                                         <MaterialCommunityIcons name="exit-to-app" size={22} color="#fff" />
                                     </TouchableOpacity>

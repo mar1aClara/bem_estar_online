@@ -7,7 +7,7 @@ import useTaskContext from "@/components/Context/useTaskContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useNavigation } from "expo-router";
  
-export default function VerReceita() {
+export default function verReceitas() {
   const { receitas } = useReceita();
   const { pacientes } = useTaskContext();
   const router = useRouter();
